@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>SlotRescue — Fill cancelled appointments automatically</title>
 
@@ -13,30 +14,29 @@
 <style>
 
 body{
-font-family:Inter;
 margin:0;
-background:#f5f7fb;
-color:#1a1a1a;
+font-family:Inter, system-ui;
+background:#f7f9fc;
+color:#0f172a;
 }
 
 .container{
-max-width:1200px;
+max-width:1100px;
 margin:auto;
-padding:40px 20px;
+padding:40px 24px;
 }
 
 nav{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:60px;
 }
 
 .logo{
 display:flex;
 align-items:center;
 font-weight:700;
-font-size:22px;
+font-size:20px;
 }
 
 .logo img{
@@ -45,32 +45,33 @@ margin-right:10px;
 }
 
 nav a{
-margin-left:25px;
+margin-left:30px;
 text-decoration:none;
-color:#444;
+color:#475569;
 font-weight:500;
 }
 
 .hero{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:60px;
+gap:70px;
 align-items:center;
+padding-top:80px;
 }
 
 .hero h1{
-font-size:48px;
-line-height:1.2;
+font-size:52px;
+line-height:1.15;
 margin-bottom:20px;
 }
 
-.hero h1 span{
+.hero span{
 color:#3b6df6;
 }
 
 .hero p{
 font-size:18px;
-color:#555;
+color:#64748b;
 margin-bottom:30px;
 }
 
@@ -78,69 +79,97 @@ margin-bottom:30px;
 display:inline-block;
 background:#3b6df6;
 color:white;
-padding:16px 28px;
+padding:16px 30px;
 border-radius:10px;
-text-decoration:none;
 font-weight:600;
-font-size:16px;
+text-decoration:none;
 }
 
 .sub{
 margin-top:10px;
 font-size:14px;
-color:#666;
+color:#64748b;
 }
 
-.demo{
+.preview{
 background:white;
-border-radius:14px;
-padding:20px;
-box-shadow:0 10px 30px rgba(0,0,0,0.08);
+border-radius:16px;
+padding:26px;
+box-shadow:0 15px 40px rgba(0,0,0,0.08);
 }
 
-.card{
-background:#f2f5ff;
-padding:14px;
+.preview h3{
+margin-bottom:20px;
+}
+
+.row{
+padding:12px;
 border-radius:8px;
 margin-bottom:10px;
 }
 
-.features{
-margin-top:80px;
+.cancel{
+background:#ffe4e4;
 }
 
-.features h2{
+.sms{
+background:#e7edff;
+}
+
+.confirm{
+background:#dff7e6;
+}
+
+.stats{
+margin-top:10px;
+font-size:14px;
+color:#64748b;
+}
+
+.section{
+margin-top:120px;
 text-align:center;
+}
+
+.section h2{
+font-size:36px;
 margin-bottom:40px;
 }
 
-.feature-grid{
+.features{
 display:grid;
 grid-template-columns:repeat(3,1fr);
-gap:25px;
+gap:30px;
 }
 
 .feature{
 background:white;
-padding:25px;
-border-radius:12px;
-box-shadow:0 5px 20px rgba(0,0,0,0.05);
+padding:28px;
+border-radius:14px;
+box-shadow:0 8px 25px rgba(0,0,0,0.05);
+text-align:left;
 }
 
 .feature h3{
-margin-bottom:10px;
+margin-bottom:8px;
 }
 
 .contact{
+margin-top:120px;
 text-align:center;
-margin-top:80px;
 }
 
 footer{
 margin-top:80px;
 text-align:center;
-color:#666;
+color:#64748b;
 font-size:14px;
+}
+
+footer a{
+color:#3b6df6;
+font-weight:600;
+text-decoration:none;
 }
 
 @media(max-width:900px){
@@ -149,12 +178,12 @@ font-size:14px;
 grid-template-columns:1fr;
 }
 
-.feature-grid{
+.features{
 grid-template-columns:1fr;
 }
 
 .hero h1{
-font-size:36px;
+font-size:38px;
 }
 
 }
@@ -175,12 +204,12 @@ SlotRescue
 </div>
 
 <div>
-<a href="#how">How it works</a>
-<a href="#pricing">Pricing</a>
+<a href="#features">Features</a>
 <a href="mailto:hello@slotrescue.co.uk">Contact</a>
 </div>
 
 </nav>
+
 
 <div class="hero">
 
@@ -192,10 +221,12 @@ Fill cancelled appointments <span>automatically</span>
 
 <p>
 Automatically offer cancelled slots to other customers and keep your schedule full.
-Works with your current workflow — no integrations required.
+No integrations required.
 </p>
 
-<a href="/start" class="cta">Start free today</a>
+<a href="/start" class="cta">
+Start free today
+</a>
 
 <div class="sub">
 Free until your first filled appointment
@@ -203,24 +234,25 @@ Free until your first filled appointment
 
 </div>
 
-<div class="demo">
+
+<div class="preview">
 
 <h3>Today's Schedule</h3>
 
-<div class="card" style="background:#ffe2e2">
+<div class="row cancel">
 14:00 — Appointment cancelled
 </div>
 
-<div class="card">
+<div class="row sms">
 SMS alerts sent to customers
 </div>
 
-<div class="card" style="background:#d9f4df">
+<div class="row confirm">
 15:00 — Appointment confirmed
 </div>
 
-<div style="margin-top:10px;font-size:14px;color:#666">
-12 customers notified • 3 replies • 1 booking confirmed
+<div class="stats">
+12 customers notified • 3 replies • 1 slot filled
 </div>
 
 </div>
@@ -228,11 +260,11 @@ SMS alerts sent to customers
 </div>
 
 
-<div class="features" id="how">
+<div class="section" id="features">
 
 <h2>Recover lost revenue automatically</h2>
 
-<div class="feature-grid">
+<div class="features">
 
 <div class="feature">
 
@@ -244,6 +276,7 @@ When an appointment is cancelled, SlotRescue automatically offers the slot to ot
 
 </div>
 
+
 <div class="feature">
 
 <h3>Automatic SMS alerts</h3>
@@ -254,13 +287,13 @@ Customers receive instant notifications when new slots become available.
 
 </div>
 
+
 <div class="feature">
 
 <h3>Works with your workflow</h3>
 
 <p>
 Add appointments manually or import them if you already use a system.
-No integrations required.
 </p>
 
 </div>
@@ -275,11 +308,11 @@ No integrations required.
 <h2>Questions?</h2>
 
 <p>
-Contact us anytime at
-<br>
+
 <a href="mailto:hello@slotrescue.co.uk">
 hello@slotrescue.co.uk
 </a>
+
 </p>
 
 </div>
@@ -287,7 +320,10 @@ hello@slotrescue.co.uk
 
 <footer>
 
-A product by <b>ZancleLabs</b>
+A product by 
+<a href="https://zanclelabs.com" target="_blank">
+ZancleLabs
+</a>
 
 </footer>
 
