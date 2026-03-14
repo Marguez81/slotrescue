@@ -56,12 +56,14 @@
       padding: 0 1.5rem;
     }
 
+    /* HEADER */
+
     header.site-header {
       position: sticky;
       top: 0;
       z-index: 20;
       backdrop-filter: blur(16px);
-      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.85));
+      background: rgba(15, 23, 42, 0.96);
       border-bottom: 1px solid rgba(51, 65, 85, 0.8);
     }
 
@@ -72,29 +74,10 @@
       padding: 0.8rem 0;
     }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-    }
-
-    .logo-mark {
-      width: 26px;
-      height: 26px;
-      border-radius: 10px;
-      background: radial-gradient(circle at 0 0, #e0e7ff 0, #6366f1 40%, #1e293b 90%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: #020617;
-    }
-
-    .logo-text {
+    .logo-text-only {
       font-weight: 700;
       letter-spacing: -0.04em;
-      font-size: 1.2rem;
+      font-size: 1.25rem;
     }
 
     nav.nav {
@@ -130,6 +113,8 @@
     main {
       padding-bottom: 4rem;
     }
+
+    /* HERO */
 
     .hero {
       background: var(--bg-hero);
@@ -253,6 +238,8 @@
       margin-bottom: 0.1rem;
     }
 
+    /* SECTIONS GENERALI + ANIMAZIONI */
+
     .section {
       padding: 3.2rem 0 2.8rem;
       background: var(--bg-surface);
@@ -275,7 +262,19 @@
       font-size: 0.97rem;
     }
 
-    /* Feature list (niente card) */
+    .fade-section {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .fade-section--visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Feature list */
+
     .feature-list {
       display: flex;
       flex-direction: column;
@@ -305,7 +304,8 @@
       color: var(--text-muted);
     }
 
-    /* Steps line (timeline verticale semplice) */
+    /* Steps line */
+
     .steps-line {
       list-style: none;
       padding: 0;
@@ -350,7 +350,8 @@
       color: var(--text-muted);
     }
 
-    /* Pricing pulito */
+    /* Pricing */
+
     .pricing-shell {
       display: grid;
       grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -423,6 +424,8 @@
       font-size: 0.95rem;
     }
 
+    /* FOOTER */
+
     footer.site-footer {
       border-top: 1px solid rgba(30, 41, 59, 0.9);
       background: #020617;
@@ -466,12 +469,8 @@
   <div class="page-shell">
     <header class="site-header">
       <div class="container header-inner">
-        <div class="logo">
-          <div class="logo-mark">S</div>
-          <div class="logo-text">SlotRescue</div>
-        </div>
+        <div class="logo-text-only">SlotRescue</div>
         <nav class="nav">
-          <a href="#benefits">Benefits</a>
           <a href="#how-it-works">How it works</a>
           <a href="#pricing">Pricing</a>
           <a href="#contact" class="nav-cta">Get early access</a>
@@ -480,7 +479,7 @@
     </header>
 
     <main>
-      <section class="hero">
+      <section class="hero fade-section">
         <div class="container hero-grid">
           <div class="hero-copy">
             <p class="eyebrow">Stop losing revenue when customers cancel</p>
@@ -513,7 +512,7 @@
         </div>
       </section>
 
-      <section id="benefits" class="section">
+      <section id="benefits" class="section fade-section">
         <div class="container section-inner">
           <h2>Why teams use SlotRescue</h2>
           <p class="section-intro">
@@ -545,7 +544,7 @@
         </div>
       </section>
 
-      <section id="how-it-works" class="section">
+      <section id="how-it-works" class="section fade-section">
         <div class="container section-inner">
           <h2>How SlotRescue works</h2>
           <p class="section-intro">
@@ -565,9 +564,9 @@
             <li>
               <span class="steps-label">2</span>
               <div class="steps-text">
-                <div class="steps-title">Mark who is flexible</div>
+                <div class="steps-title">Build your short‑notice list</div>
                 <div class="steps-body">
-                  Build a short‑notice list of customers who are happy to come earlier if a slot opens.[page:1][file:16]
+                  Collect customers who are happy to come earlier if a slot opens.[page:1][file:16]
                 </div>
               </div>
             </li>
@@ -585,7 +584,7 @@
         </div>
       </section>
 
-      <section id="pricing" class="section">
+      <section id="pricing" class="section fade-section">
         <div class="container section-inner">
           <h2>Simple, flat pricing</h2>
           <div class="pricing-shell">
@@ -604,12 +603,12 @@
                 <span class="price">£20</span>
                 <span class="price-unit">per month</span>
               </div>
-              <div class="pricing-detail">Unlimited SMS alerts, no setup fees.</div>
+              <div class="pricing-detail">Per month, unlimited SMS alerts.</div>
               <div class="price-row" style="margin-top:0.7rem;">
                 <span class="price">£120</span>
                 <span class="price-unit">per year</span>
               </div>
-              <div class="pricing-detail">Pay once, use all year.</div>
+              <div class="pricing-detail">Per year — pay once, use all year.[page:1]</div>
               <div class="badge">Limited to the first 200 businesses</div>
               <p class="note">Free until your first filled appointment. No card required.[page:1][file:16]</p>
             </div>
@@ -617,7 +616,7 @@
         </div>
       </section>
 
-      <section id="contact" class="section section-contact">
+      <section id="contact" class="section fade-section section-contact">
         <div class="container section-inner">
           <h2>Questions?</h2>
           <p>Email <a href="mailto:hello@slotrescue.co.uk">hello@slotrescue.co.uk</a> and we’ll get back within one business day.[page:1]</p>
@@ -634,5 +633,28 @@
       </div>
     </footer>
   </div>
+
+  <script>
+    (function () {
+      const sections = document.querySelectorAll('.fade-section');
+
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(
+          entries => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('fade-section--visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.18 }
+        );
+        sections.forEach(sec => observer.observe(sec));
+      } else {
+        sections.forEach(sec => sec.classList.add('fade-section--visible'));
+      }
+    })();
+  </script>
 </body>
 </html>
