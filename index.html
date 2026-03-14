@@ -1,380 +1,807 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SlotRescue — Fill cancelled appointments automatically</title>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-<title>SlotRescue — Fill cancelled appointments automatically</title>
+  <style>
+    :root {
+      --bg: #eef3ff;
+      --bg-soft: #f4f7ff;
+      --primary: #3b6df6;
+      --primary-alt: #16a34a;
+      --primary-soft: #e3ebff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --card: #ffffff;
+      --radius-lg: 18px;
+      --shadow-soft: 0 22px 60px rgba(15, 23, 42, 0.16);
+      --shadow-card: 0 16px 40px rgba(15, 23, 42, 0.09);
+    }
 
-<link rel="icon" type="image/png" href="/favicon.png">
+    * {
+      box-sizing: border-box;
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top left, #e4efff, #f8fafc 55%, #e0ebff);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
 
-<style>
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-body{
-margin:0;
-font-family:Inter, system-ui;
-background:#f8fafc;
-color:#0f172a;
-}
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-.container{
-max-width:1100px;
-margin:auto;
-padding:40px 24px;
-}
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 26px 20px 80px;
+    }
 
-nav{
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-.logo{
-display:flex;
-align-items:center;
-font-weight:700;
-font-size:40px;
-}
+    .nav-left {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
 
-.logo img{
-width:34px;
-margin-right:10px;
-}
+    .wordmark {
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: 0.04em;
+      display: inline-flex;
+      align-items: baseline;
+      gap: 4px;
+      cursor: default;
+      user-select: none;
+    }
 
-nav a{
-margin-left:28px;
-text-decoration:none;
-color:#475569;
-font-weight:500;
-}
+    .wordmark span:first-child {
+      color: var(--primary);
+    }
 
-.hero{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:70px;
-align-items:center;
-padding-top:80px;
-}
+    .wordmark span:last-child {
+      color: var(--primary-alt);
+    }
 
-.hero h1{
-font-size:45px;
-line-height:1.15;
-margin-bottom:20px;
-}
+    .tm {
+      font-size: 10px;
+      color: #94a3b8;
+      position: relative;
+      top: -6px;
+    }
 
-.hero span{
-color:#3b6df6;
-}
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #475569;
+    }
 
-.hero p{
-font-size:18px;
-color:#64748b;
-margin-bottom:30px;
-}
+    .nav-links a:hover {
+      color: var(--text);
+    }
 
-.cta{
-display:inline-block;
-background:#3b6df6;
-color:white;
-padding:16px 32px;
-border-radius:10px;
-font-weight:600;
-text-decoration:none;
-}
+    .nav-pill {
+      padding: 9px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--primary-soft);
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+    }
 
-.sub{
-margin-top:10px;
-font-size:14px;
-color:#64748b;
-}
+    /* HERO */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 72px;
+      align-items: center;
+      padding-top: 72px;
+    }
 
-.preview{
-background:white;
-border-radius:16px;
-padding:26px;
-box-shadow:0 15px 40px rgba(0,0,0,0.08);
-}
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid #dbeafe;
+      color: #1d4ed8;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 14px;
+      animation: fadeInUp 0.6s ease-out both;
+    }
 
-.preview h3{
-margin-bottom:20px;
-}
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.22);
+    }
 
-.row{
-padding:12px;
-border-radius:8px;
-margin-bottom:10px;
-}
+    h1 {
+      font-size: 52px;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      margin: 0 0 18px;
+      animation: fadeInUp 0.7s ease-out 0.05s both;
+    }
 
-.cancel{background:#ffe4e4}
-.sms{background:#e7edff}
-.confirm{background:#dff7e6}
+    h1 span {
+      color: var(--primary);
+    }
 
-.stats{
-margin-top:10px;
-font-size:14px;
-color:#64748b;
-}
+    .hero p {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 430px;
+      margin: 0 0 26px;
+      animation: fadeInUp 0.8s ease-out 0.1s both;
+    }
 
-.section{
-margin-top:120px;
-text-align:center;
-}
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+      animation: fadeInUp 0.9s ease-out 0.15s both;
+    }
 
-.section h2{
-font-size:36px;
-margin-bottom:40px;
-}
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px 30px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #2563eb, #4f46e5);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 15px;
+      box-shadow: 0 18px 40px rgba(37, 99, 235, 0.55);
+      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+    }
 
-.features{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:30px;
-}
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 20px 46px rgba(37, 99, 235, 0.6);
+    }
 
-.feature{
-background:white;
-padding:28px;
-border-radius:14px;
-box-shadow:0 8px 25px rgba(0,0,0,0.05);
-text-align:left;
-}
+    .btn-ghost {
+      font-size: 14px;
+      color: #1d4ed8;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-.feature h3{
-margin-bottom:8px;
-}
+    .btn-ghost::after {
+      content: "→";
+      font-size: 14px;
+    }
 
-.pricing{
-margin-top:120px;
-text-align:center;
-}
+    .hero-sub {
+      font-size: 13px;
+      color: var(--muted);
+      animation: fadeInUp 1s ease-out 0.2s both;
+    }
 
-.pricing-cards{
-display:flex;
-justify-content:center;
-gap:40px;
-flex-wrap:wrap;
-margin-top:40px;
-}
+    /* HERO PREVIEW */
+    .preview {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      padding: 22px 22px 20px;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+      transform-origin: 50% 60%;
+      animation: floatIn 0.9s ease-out 0.2s both;
+    }
 
-.card{
-background:white;
-padding:40px;
-border-radius:16px;
-box-shadow:0 10px 30px rgba(0,0,0,0.06);
-width:260px;
-}
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: #0f172a;
+      font-weight: 500;
+    }
 
-.card.highlight{
-border:2px solid #3b6df6;
-}
+    .preview-pill {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #eff4ff;
+      font-size: 11px;
+      color: #1d4ed8;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-.price{
-font-size:36px;
-font-weight:700;
-}
+    .preview-pill span {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
 
-.contact{
-margin-top:120px;
-text-align:center;
-}
+    .preview-rows {
+      position: relative;
+      padding-top: 4px;
+    }
 
-footer{
-margin-top:80px;
-text-align:center;
-color:#64748b;
-font-size:14px;
-}
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      font-size: 13px;
+      opacity: 0;
+      transform: translateY(6px);
+      animation: rowIn 0.6s ease-out forwards;
+    }
 
-footer a{
-color:#3b6df6;
-font-weight:600;
-text-decoration:none;
-}
+    .row:nth-child(1) {
+      animation-delay: 0.15s;
+    }
 
-@media(max-width:900px){
+    .row:nth-child(2) {
+      animation-delay: 0.35s;
+    }
 
-.hero{
-grid-template-columns:1fr;
-}
+    .row:nth-child(3) {
+      animation-delay: 0.55s;
+    }
 
-.features{
-grid-template-columns:1fr;
-}
+    .row-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-.hero h1{
-font-size:38px;
-}
+    .row-time {
+      width: 54px;
+      text-align: center;
+      padding: 4px 0;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 500;
+    }
 
-}
+    .cancel {
+      background: #fee2e2;
+    }
 
-</style>
+    .cancel .row-time {
+      background: #fecaca;
+      color: #b91c1c;
+    }
 
+    .sms {
+      background: #e0ecff;
+    }
+
+    .sms .row-time {
+      background: #c7d2fe;
+      color: #1d4ed8;
+    }
+
+    .confirm {
+      background: #dcfce7;
+    }
+
+    .confirm .row-time {
+      background: #bbf7d0;
+      color: #15803d;
+    }
+
+    .stats {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      animation: fadeInUp 0.7s ease-out 0.9s both;
+    }
+
+    /* SECTIONS BASE */
+    section {
+      scroll-margin-top: 90px;
+    }
+
+    .section {
+      margin-top: 110px;
+      text-align: center;
+    }
+
+    .section h2 {
+      font-size: 32px;
+      margin-bottom: 14px;
+      letter-spacing: -0.03em;
+    }
+
+    .section p.lead {
+      max-width: 520px;
+      margin: 0 auto 32px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    /* FEATURES */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 26px;
+    }
+
+    .feature {
+      background: var(--card);
+      padding: 24px 22px;
+      border-radius: 16px;
+      box-shadow: var(--shadow-card);
+      text-align: left;
+      font-size: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), transparent);
+      opacity: 0;
+      transition: opacity 0.15s ease-out;
+    }
+
+    .feature:hover::before {
+      opacity: 1;
+    }
+
+    .feature h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    .feature p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    /* HOW IT WORKS */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+      margin-top: 28px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .step {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 16px;
+      padding: 20px 18px 18px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .step-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .step h3 {
+      margin: 0 0 6px;
+      font-size: 15px;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    /* PRICING */
+    .pricing {
+      margin-top: 110px;
+      text-align: center;
+    }
+
+    .pricing h2 {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .pricing .tagline {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .pricing-cards {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 26px;
+      margin-top: 36px;
+    }
+
+    .card {
+      background: var(--card);
+      padding: 30px 28px 32px;
+      border-radius: 18px;
+      box-shadow: var(--shadow-card);
+      width: 250px;
+      text-align: left;
+      position: relative;
+    }
+
+    .card.highlight {
+      border: 2px solid var(--primary);
+      box-shadow: 0 22px 55px rgba(37, 99, 235, 0.35);
+    }
+
+    .badge {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-weight: 500;
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+    }
+
+    .price {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 4px 0 0;
+    }
+
+    .card p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .pricing-note {
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* SOCIAL PROOF */
+    .social-proof {
+      margin-top: 72px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .social-proof strong {
+      color: #0f172a;
+    }
+
+    /* CONTACT + FOOTER */
+    .contact {
+      margin-top: 96px;
+      text-align: center;
+    }
+
+    .contact h2 {
+      font-size: 26px;
+      margin-bottom: 8px;
+    }
+
+    .contact a {
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    footer {
+      margin-top: 60px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      padding-bottom: 30px;
+    }
+
+    footer a {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes floatIn {
+      from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.97);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes rowIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding-top: 52px;
+      }
+
+      h1 {
+        font-size: 38px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .preview {
+        max-width: 380px;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-links {
+        display: none;
+      }
+      .container {
+        padding: 20px 18px 60px;
+      }
+    }
+  </style>
 </head>
 
 <body>
+<div class="page">
+  <div class="container">
 
-<div class="container">
+    <nav>
+      <div class="nav-left">
+        <div class="wordmark">
+          <span>Slot</span><span>Rescue</span>
+        </div>
+        <span class="tm">TM</span>
+      </div>
 
-<nav>
+      <div class="nav-links">
+        <a href="#features">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact" class="nav-pill">Login / Contact</a>
+      </div>
+    </nav>
 
-<div class="logo">
-<img src="/logo.svg">
-SlotRescue
+    <section class="hero">
+      <div>
+        <div class="eyebrow">
+          <span class="dot"></span>
+          Turn cancellations into booked revenue
+        </div>
+
+        <h1>Fill cancelled appointments <span>automatically</span></h1>
+
+        <p>
+          Automatically offer cancelled slots to other customers and keep your schedule full. No integrations, no custom IT work.
+        </p>
+
+        <div class="hero-actions">
+          <a href="/start" class="btn-primary">Start free today</a>
+          <a href="#features" class="btn-ghost">See how it works</a>
+        </div>
+
+        <div class="hero-sub">
+          Free until your first filled appointment. Cancel anytime.
+        </div>
+      </div>
+
+      <aside class="preview" aria-label="Schedule preview">
+        <div class="preview-header">
+          <div>Today’s Schedule</div>
+          <div class="preview-pill">
+            <span></span>
+            Import appointments CSV
+          </div>
+        </div>
+
+        <div class="preview-rows">
+          <div class="row cancel">
+            <div class="row-left">
+              <div class="row-time">14:00</div>
+              <div>Appointment cancelled</div>
+            </div>
+          </div>
+
+          <div class="row sms">
+            <div class="row-left">
+              <div class="row-time">09:58</div>
+              <div>SMS alerts sent to customers</div>
+            </div>
+          </div>
+
+          <div class="row confirm">
+            <div class="row-left">
+              <div class="row-time">15:00</div>
+              <div>MOT Test — slot filled</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats">
+          12 customers notified • 3 replies • 1 slot filled automatically
+        </div>
+      </aside>
+    </section>
+
+    <section class="section" id="features">
+      <h2>Recover lost revenue automatically</h2>
+      <p class="lead">
+        SlotRescue works quietly in the background, filling last‑minute gaps in your calendar so your team doesn’t have to chase cancellations.
+      </p>
+
+      <div class="features">
+        <div class="feature">
+          <h3>Fill empty slots instantly</h3>
+          <p>When an appointment is cancelled, SlotRescue automatically offers that slot to your waitlist or recent customers.</p>
+        </div>
+
+        <div class="feature">
+          <h3>Automatic SMS alerts</h3>
+          <p>Customers receive instant SMS notifications with a one‑tap link to book the opening before someone else takes it.</p>
+        </div>
+
+        <div class="feature">
+          <h3>Works with your workflow</h3>
+          <p>Add appointments manually or import a CSV from the tools you already use. No integrations or IT projects required.</p>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Upload your schedule</h3>
+          <p>Import a simple CSV or add appointments as you go. SlotRescue keeps track of what’s booked and what’s free.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Set up your alerts</h3>
+          <p>Choose which customers to notify, how many at a time, and how long a slot should be held before it is offered again.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Let cancellations auto‑fill</h3>
+          <p>When someone cancels, we send SMS alerts and confirm the first reply. Your calendar stays full with almost no manual work.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+      <h2>Simple pricing</h2>
+      <p class="tagline">Free until your first filled appointment — then a flat monthly fee.</p>
+
+      <div class="pricing-cards">
+        <div class="card">
+          <h3>Monthly</h3>
+          <div class="price">£20</div>
+          <p>per month, unlimited SMS alerts.</p>
+        </div>
+
+        <div class="card highlight">
+          <span class="badge">Best value</span>
+          <h3>Annual</h3>
+          <div class="price">£120</div>
+          <p>per year, two months free compared to monthly.</p>
+        </div>
+      </div>
+
+      <div class="pricing-note">
+        Early access pricing — limited to the first 200 businesses.
+      </div>
+    </section>
+
+    <div class="social-proof">
+      <strong>Built for busy clinics, garages and salons</strong> that can’t afford empty time in their schedule.
+    </div>
+
+    <section class="contact" id="contact">
+      <h2>Questions or partnership ideas?</h2>
+      <p>
+        Email <a href="mailto:hello@slotrescue.co.uk">hello@slotrescue.co.uk</a> and we’ll get back within one business day.
+      </p>
+    </section>
+
+    <footer>
+      A product by <a href="https://zanclelabs.com" target="_blank" rel="noreferrer">ZancleLabs</a>
+    </footer>
+
+  </div>
 </div>
 
-<div>
-<a href="#features">Features</a>
-<a href="#pricing">Pricing</a>
-<a href="mailto:hello@slotrescue.co.uk">Contact</a>
-</div>
+<script>
+  // Loop hero preview rows animation every few seconds
+  const rows = document.querySelectorAll(".preview-rows .row");
+  let cycle = 0;
 
-</nav>
+  function animateRows() {
+    rows.forEach((row, index) => {
+      row.style.animation = "none";
+      // force reflow
+      void row.offsetWidth;
+      row.style.animation = "rowIn 0.6s ease-out forwards";
+      row.style.animationDelay = (0.15 + index * 0.2) + "s";
+    });
+    cycle++;
+  }
 
-
-<div class="hero">
-
-<div>
-
-<h1>
-Fill cancelled appointments <span>automatically</span>
-</h1>
-
-<p>
-Automatically offer cancelled slots to other customers and keep your schedule full.
-No integrations required.
-</p>
-
-<a href="/start" class="cta">Start free today</a>
-
-<div class="sub">
-Free until your first filled appointment
-</div>
-
-</div>
-
-
-<div class="preview">
-
-<h3>Today's Schedule</h3>
-
-<div class="row cancel">
-14:00 — Appointment cancelled
-</div>
-
-<div class="row sms">
-SMS alerts sent to customers
-</div>
-
-<div class="row confirm">
-15:00 — Appointment confirmed
-</div>
-
-<div class="stats">
-12 customers notified • 3 replies • 1 slot filled
-</div>
-
-</div>
-
-</div>
-
-
-<div class="section" id="features">
-
-<h2>Recover lost revenue automatically</h2>
-
-<div class="features">
-
-<div class="feature">
-<h3>Fill empty slots instantly</h3>
-<p>
-When an appointment is cancelled, SlotRescue automatically offers the slot to other customers.
-</p>
-</div>
-
-<div class="feature">
-<h3>Automatic SMS alerts</h3>
-<p>
-Customers receive instant notifications when new slots become available.
-</p>
-</div>
-
-<div class="feature">
-<h3>Works with your workflow</h3>
-<p>
-Add appointments manually or import them if you already use a system.
-</p>
-</div>
-
-</div>
-
-</div>
-
-
-<div class="pricing" id="pricing">
-
-<h2>Simple pricing</h2>
-
-<p style="color:#64748b">
-Free until your first filled appointment
-</p>
-
-<div class="pricing-cards">
-
-<div class="card">
-
-<h3>Monthly</h3>
-
-<div class="price">£20</div>
-
-<p>per month</p>
-
-</div>
-
-<div class="card highlight">
-
-<h3>Annual</h3>
-
-<div class="price">£120</div>
-
-<p>per year</p>
-
-</div>
-
-</div>
-
-<p style="margin-top:25px;color:#64748b">
-Early access pricing — limited to the first 200 businesses
-</p>
-
-</div>
-
-
-<div class="contact">
-
-<h2>Questions?</h2>
-
-<p>
-<a href="mailto:hello@slotrescue.co.uk">
-hello@slotrescue.co.uk
-</a>
-</p>
-
-</div>
-
-
-<footer>
-
-A product by 
-<a href="https://zanclelabs.com" target="_blank">
-ZancleLabs
-</a>
-
-</footer>
-
-</div>
-
+  setInterval(animateRows, 5000);
+</script>
 </body>
 </html>
