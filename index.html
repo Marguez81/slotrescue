@@ -10,18 +10,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-body: #020617;
-      --bg-hero: radial-gradient(circle at top left, #1e293b 0, #020617 45%);
-      --bg-card: rgba(15, 23, 42, 0.9);
-      --bg-section: #020617;
-      --border-subtle: rgba(148, 163, 184, 0.35);
+      --bg-page: #020617;
+      --bg-hero: radial-gradient(circle at top left, #1d4ed8 0, #020617 45%);
+      --bg-surface: #020617;
+      --border-subtle: rgba(148, 163, 184, 0.3);
       --text-main: #e5e7eb;
-      --text-muted: #94a3b8;
-      --primary: #4f46e5;
-      --primary-soft: rgba(79, 70, 229, 0.15);
+      --text-muted: #9ca3af;
+      --primary: #6366f1;
       --radius-md: 0.75rem;
       --radius-lg: 1rem;
-      --shadow-soft: 0 20px 45px rgba(15, 23, 42, 0.8);
+      --shadow-soft: 0 22px 45px rgba(15, 23, 42, 0.9);
     }
 
     * {
@@ -32,7 +30,7 @@
       margin: 0;
       font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       color: var(--text-main);
-      background: var(--bg-body);
+      background: var(--bg-page);
       line-height: 1.6;
     }
 
@@ -43,6 +41,13 @@
 
     a:hover {
       text-decoration: underline;
+    }
+
+    .page-shell {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 0 0, rgba(129, 140, 248, 0.18) 0, transparent 45%),
+        radial-gradient(circle at 100% 0, rgba(56, 189, 248, 0.14) 0, transparent 45%);
     }
 
     .container {
@@ -56,8 +61,8 @@
       top: 0;
       z-index: 20;
       backdrop-filter: blur(16px);
-      background: linear-gradient(to bottom, rgba(2, 6, 23, 0.9), rgba(2, 6, 23, 0.6));
-      border-bottom: 1px solid rgba(30, 64, 175, 0.4);
+      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.85));
+      border-bottom: 1px solid rgba(51, 65, 85, 0.8);
     }
 
     .header-inner {
@@ -68,25 +73,28 @@
     }
 
     .logo {
-      font-weight: 700;
-      letter-spacing: -0.04em;
-      font-size: 1.2rem;
       display: flex;
       align-items: center;
-      gap: 0.25rem;
+      gap: 0.45rem;
     }
 
     .logo-mark {
-      width: 24px;
-      height: 24px;
-      border-radius: 8px;
-      background: radial-gradient(circle at 0 0, #a5b4fc 0, #4f46e5 30%, #020617 80%);
+      width: 26px;
+      height: 26px;
+      border-radius: 10px;
+      background: radial-gradient(circle at 0 0, #e0e7ff 0, #6366f1 40%, #1e293b 90%);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       font-weight: 700;
-      color: #e5e7eb;
+      color: #020617;
+    }
+
+    .logo-text {
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      font-size: 1.2rem;
     }
 
     nav.nav {
@@ -97,7 +105,7 @@
     }
 
     .nav a {
-      color: var(--text-muted);
+      color: #9ca3af;
     }
 
     .nav a:hover {
@@ -105,17 +113,17 @@
     }
 
     .nav-cta {
-      padding: 0.4rem 0.95rem;
+      padding: 0.45rem 1rem;
       border-radius: 999px;
-      border: 1px solid rgba(129, 140, 248, 0.7);
-      background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.25), rgba(15, 23, 42, 0.95));
+      border: 1px solid rgba(156, 163, 175, 0.7);
+      background: radial-gradient(circle at top left, rgba(148, 163, 253, 0.25), rgba(15, 23, 42, 0.98));
       color: #e5e7eb;
       font-weight: 500;
       text-decoration: none;
     }
 
     .nav-cta:hover {
-      border-color: #818cf8;
+      border-color: #e5e7eb;
       text-decoration: none;
     }
 
@@ -125,42 +133,41 @@
 
     .hero {
       background: var(--bg-hero);
-      padding: 3.5rem 0 3rem;
+      padding: 3.6rem 0 3rem;
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-      gap: 2.5rem;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.05fr);
+      gap: 2.8rem;
       align-items: center;
     }
 
     .eyebrow {
       font-size: 0.8rem;
       text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: #818cf8;
+      letter-spacing: 0.18em;
+      color: #a5b4fc;
       font-weight: 600;
       margin: 0 0 0.7rem;
     }
 
     h1 {
-      font-size: 2.4rem;
+      font-size: 2.5rem;
       line-height: 1.05;
       margin: 0 0 1rem;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.05em;
     }
 
     .lead {
       font-size: 1.02rem;
-      color: var(--text-muted);
-      max-width: 34rem;
-      margin: 0 0 1.6rem;
+      color: #cbd5f5;
+      max-width: 36rem;
+      margin: 0 0 1.7rem;
     }
 
     .hero-cta {
       display: flex;
-      flex-direction: row;
       flex-wrap: wrap;
       gap: 0.75rem 1rem;
       align-items: center;
@@ -171,7 +178,7 @@
       align-items: center;
       justify-content: center;
       border-radius: 999px;
-      padding: 0.7rem 1.5rem;
+      padding: 0.75rem 1.6rem;
       border: none;
       font-weight: 500;
       cursor: pointer;
@@ -186,20 +193,20 @@
     }
 
     .btn-primary:hover {
-      filter: brightness(1.05);
+      filter: brightness(1.04);
     }
 
     .hero-note {
-      font-size: 0.85rem;
-      color: var(--text-muted);
+      font-size: 0.86rem;
+      color: #cbd5f5;
     }
 
     .hero-panel {
-      background: radial-gradient(circle at top, rgba(30, 64, 175, 0.3), rgba(15, 23, 42, 0.95));
+      background: rgba(15, 23, 42, 0.96);
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-soft);
-      padding: 1.3rem 1.1rem;
-      border: 1px solid rgba(129, 140, 248, 0.35);
+      padding: 1.25rem 1.1rem;
+      border: 1px solid rgba(148, 163, 253, 0.35);
     }
 
     .hero-panel-header {
@@ -223,21 +230,21 @@
       background: rgba(34, 197, 94, 0.1);
       color: #22c55e;
       font-weight: 500;
-      border: 1px solid rgba(34, 197, 94, 0.35);
+      border: 1px solid rgba(34, 197, 94, 0.4);
     }
 
     .sms-list {
       display: flex;
       flex-direction: column;
       gap: 0.6rem;
-      font-size: 0.85rem;
+      font-size: 0.86rem;
     }
 
     .sms-item {
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(15, 23, 42, 1);
       border-radius: 0.9rem;
       padding: 0.6rem 0.7rem;
-      border: 1px solid rgba(148, 163, 184, 0.4);
+      border: 1px solid rgba(148, 163, 184, 0.45);
     }
 
     .sms-label {
@@ -248,7 +255,7 @@
 
     .section {
       padding: 3.2rem 0 2.8rem;
-      background: var(--bg-section);
+      background: var(--bg-surface);
     }
 
     .section-inner {
@@ -263,122 +270,104 @@
     }
 
     .section-intro {
-      margin: 0 0 1.7rem;
+      margin: 0 0 1.8rem;
       color: var(--text-muted);
       font-size: 0.97rem;
     }
 
-    .cards-3 {
+    /* Feature list (niente card) */
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    .feature {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1.1rem;
+      grid-template-columns: 0.55fr 1.45fr;
+      gap: 1.25rem;
+      padding: 1rem 0;
+      border-top: 1px solid rgba(148, 163, 184, 0.35);
     }
 
-    .card {
-      background: var(--bg-card);
-      border-radius: var(--radius-md);
-      padding: 1rem 0.95rem;
-      border: 1px solid var(--border-subtle);
-      transform: translateY(16px);
-      opacity: 0;
-      transition: opacity 0.5s ease, transform 0.5s ease;
+    .feature:last-child {
+      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
     }
 
-    .card--visible {
-      opacity: 1;
-      transform: translateY(0);
+    .feature-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
     }
 
-    .card h3 {
-      font-size: 0.98rem;
-      margin: 0 0 0.4rem;
-    }
-
-    .card p {
+    .feature-body {
       font-size: 0.9rem;
       color: var(--text-muted);
-      margin: 0;
     }
 
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1.1rem;
+    /* Steps line (timeline verticale semplice) */
+    .steps-line {
       list-style: none;
       padding: 0;
       margin: 0;
-      counter-reset: step;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
     }
 
-    .steps li {
-      background: var(--bg-card);
-      border-radius: var(--radius-md);
-      padding: 1rem 0.95rem 1.1rem;
-      border: 1px solid var(--border-subtle);
-      position: relative;
-      transform: translateY(16px);
-      opacity: 0;
-      transition: opacity 0.5s ease, transform 0.5s ease;
+    .steps-line li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.9rem;
+      align-items: flex-start;
     }
 
-    .steps li::before {
-      counter-increment: step;
-      content: counter(step);
-      position: absolute;
-      top: 0.75rem;
-      right: 0.9rem;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid var(--border-subtle);
-      width: 1.3rem;
-      height: 1.3rem;
+    .steps-label {
+      width: 24px;
+      height: 24px;
       border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 0.78rem;
+      color: var(--text-muted);
     }
 
-    .steps-visible li {
-      opacity: 1;
-      transform: translateY(0);
+    .steps-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
     }
 
-    .steps h3 {
+    .steps-title {
       font-size: 0.95rem;
-      margin: 0 0 0.4rem;
+      font-weight: 600;
     }
 
-    .steps p {
+    .steps-body {
       font-size: 0.9rem;
       color: var(--text-muted);
-      margin: 0;
     }
 
-    .pricing-grid {
+    /* Pricing pulito */
+    .pricing-shell {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1.1rem;
-      margin-bottom: 0.8rem;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 1.8rem;
+      align-items: flex-start;
+    }
+
+    .pricing-copy {
+      font-size: 0.9rem;
+      color: var(--text-muted);
     }
 
     .pricing-card {
-      background: var(--bg-card);
-      border-radius: var(--radius-md);
-      padding: 1.2rem 1.1rem;
-      border: 1px solid var(--border-subtle);
-      transform: translateY(16px);
-      opacity: 0;
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-
-    .pricing-card--visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .pricing-card--highlight {
-      border-color: rgba(129, 140, 248, 0.7);
+      background: #020617;
+      border-radius: var(--radius-lg);
+      padding: 1.3rem 1.2rem;
+      border: 1px solid rgba(129, 140, 248, 0.8);
       box-shadow: var(--shadow-soft);
     }
 
@@ -387,44 +376,55 @@
       font-size: 0.98rem;
     }
 
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.35rem;
+      margin-bottom: 0.35rem;
+    }
+
     .price {
-      font-size: 1.7rem;
+      font-size: 1.8rem;
       font-weight: 700;
-      margin: 0 0 0.1rem;
       letter-spacing: -0.04em;
     }
 
-    .pricing-card p {
-      margin: 0.1rem 0;
+    .price-unit {
       font-size: 0.9rem;
       color: var(--text-muted);
     }
 
+    .pricing-detail {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
     .badge {
       display: inline-block;
-      margin-top: 0.4rem;
+      margin-top: 0.3rem;
       padding: 0.25rem 0.6rem;
       border-radius: 999px;
       font-size: 0.75rem;
-      background: var(--primary-soft);
-      color: #c7d2fe;
+      background: rgba(99, 102, 241, 0.18);
+      color: #e5e7ff;
       font-weight: 500;
     }
 
     .note {
-      font-size: 0.85rem;
+      font-size: 0.86rem;
       color: var(--text-muted);
-      margin: 0;
+      margin-top: 0.75rem;
     }
 
     .section-contact p {
-      margin: 0.4rem 0 0;
+      margin: 0.5rem 0 0;
       color: var(--text-muted);
       font-size: 0.95rem;
     }
 
     footer.site-footer {
-      border-top: 1px solid rgba(15, 23, 42, 0.9);
+      border-top: 1px solid rgba(30, 41, 59, 0.9);
       background: #020617;
       padding: 1.5rem 0;
       font-size: 0.85rem;
@@ -452,207 +452,187 @@
         display: none;
       }
 
-      .cards-3 {
+      .feature {
         grid-template-columns: minmax(0, 1fr);
       }
 
-      .steps {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .pricing-grid {
+      .pricing-shell {
         grid-template-columns: minmax(0, 1fr);
       }
     }
   </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <div class="logo">
-        <div class="logo-mark">S</div>
-        <span>SlotRescue</span>
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="logo">
+          <div class="logo-mark">S</div>
+          <div class="logo-text">SlotRescue</div>
+        </div>
+        <nav class="nav">
+          <a href="#benefits">Benefits</a>
+          <a href="#how-it-works">How it works</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#contact" class="nav-cta">Get early access</a>
+        </nav>
       </div>
-      <nav class="nav">
-        <a href="#benefits">Benefits</a>
-        <a href="#how-it-works">How it works</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#contact" class="nav-cta">Get early access</a>
-      </nav>
-    </div>
-  </header>
+    </header>
 
-  <main>
-    <section class="hero">
-      <div class="container hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow">Stop losing revenue when customers cancel</p>
-          <h1>Fill cancelled appointments automatically</h1>
-          <p class="lead">
-            SlotRescue offers cancelled slots to other customers for you,
-            so your diary stays full and your team stays focused on the work.
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Stop losing revenue when customers cancel</p>
+            <h1>Fill cancelled appointments automatically</h1>
+            <p class="lead">
+              SlotRescue offers cancelled slots to other customers for you,
+              so your diary stays full and your team stays focused on the work.
+            </p>
+            <div class="hero-cta">
+              <button class="btn btn-primary" type="button">Get early access</button>
+              <p class="hero-note">Free until your first filled appointment. No card required.</p>
+            </div>
+          </div>
+          <aside class="hero-panel" aria-label="Example SlotRescue SMS flow">
+            <div class="hero-panel-header">
+              <div class="hero-panel-title">Today’s cancellations</div>
+              <div class="hero-panel-tag">Auto‑filled</div>
+            </div>
+            <div class="sms-list">
+              <div class="sms-item">
+                <div class="sms-label">14:00 · Garage MOT</div>
+                <div>“A slot has opened today at 14:00. Tap the link to confirm or reply YES to book.”</div>
+              </div>
+              <div class="sms-item">
+                <div class="sms-label">14:03 · Accepted</div>
+                <div>Customer moves from Friday 10:00 to today at 14:00. Your diary stays full.</div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="benefits" class="section">
+        <div class="container section-inner">
+          <h2>Why teams use SlotRescue</h2>
+          <p class="section-intro">
+            SlotRescue keeps your calendar full by turning last‑minute cancellations into booked jobs,
+            without extra calls or admin.[page:1]
           </p>
-          <div class="hero-cta">
-            <button class="btn btn-primary" type="button">Get early access</button>
-            <p class="hero-note">Free until your first filled appointment. No card required.</p>
-          </div>
-        </div>
-        <aside class="hero-panel" aria-label="Example SlotRescue SMS flow">
-          <div class="hero-panel-header">
-            <div class="hero-panel-title">Today’s cancellations</div>
-            <div class="hero-panel-tag">Auto‑filled</div>
-          </div>
-          <div class="sms-list">
-            <div class="sms-item">
-              <div class="sms-label">14:00 · Garage MOT</div>
-              <div>“A slot has opened today at 14:00. Tap the link to confirm or reply YES to book.”</div>
+          <div class="feature-list">
+            <div class="feature">
+              <div class="feature-title">Recover revenue you already earned</div>
+              <div class="feature-body">
+                When someone cancels late, SlotRescue promotes that slot to customers who already booked,
+                instead of letting it disappear into the calendar.[page:1]
+              </div>
             </div>
-            <div class="sms-item">
-              <div class="sms-label">14:03 · Accepted</div>
-              <div>Customer moves from Friday 10:00 to today at 14:00. Your diary stays full.</div>
+            <div class="feature">
+              <div class="feature-title">No integrations, no migration</div>
+              <div class="feature-body">
+                Type today’s appointments straight into SlotRescue. It works alongside paper diaries,
+                spreadsheets, and existing booking tools.[page:1][file:16]
+              </div>
+            </div>
+            <div class="feature">
+              <div class="feature-title">SMS first for real customers</div>
+              <div class="feature-body">
+                Customers receive a simple text with a link — no app to install, no portal to remember.[file:16]
+              </div>
             </div>
           </div>
-        </aside>
-      </div>
-    </section>
-
-    <section id="benefits" class="section">
-      <div class="container section-inner">
-        <h2>Recover lost revenue automatically</h2>
-        <p class="section-intro">
-          SlotRescue keeps your calendar full by turning last‑minute cancellations into booked jobs,
-          without extra calls or admin.
-        </p>
-        <div class="cards-3 js-fade-cards">
-          <article class="card">
-            <h3>Fill empty slots instantly</h3>
-            <p>Cancelled appointment? SlotRescue immediately offers that slot to customers who said they’re happy to come sooner.</p>
-          </article>
-          <article class="card">
-            <h3>Automatic SMS alerts</h3>
-            <p>Send clear, branded texts with one‑tap links so customers can confirm a free slot in seconds.</p>
-          </article>
-          <article class="card">
-            <h3>Log bookings in seconds</h3>
-            <p>Type appointments straight into SlotRescue, even if you currently use paper, a spreadsheet, or a simple calendar.</p>
-          </article>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="how-it-works" class="section">
-      <div class="container section-inner">
-        <h2>How SlotRescue works</h2>
-        <p class="section-intro">
-          SlotRescue focuses on one specific problem: automatically recovering cancelled appointment slots
-          by offering them to customers who already have bookings in the future.
-        </p>
-        <ol class="steps js-steps">
-          <li>
-            <h3>Add today’s appointments</h3>
-            <p>Drop in the jobs you’ve already booked so SlotRescue knows exactly when you’re busy and when you’re free.</p>
-          </li>
-          <li>
-            <h3>Build your short‑notice list</h3>
-            <p>Collect customers who like being called in earlier. We keep that list ready for when slots open.</p>
-          </li>
-          <li>
-            <h3>Let cancellations auto‑fill</h3>
-            <p>When someone cancels, we message your list and confirm the first reply. Your diary stays full automatically.</p>
-          </li>
-        </ol>
-      </div>
-    </section>
+      <section id="how-it-works" class="section">
+        <div class="container section-inner">
+          <h2>How SlotRescue works</h2>
+          <p class="section-intro">
+            SlotRescue focuses on one specific problem: automatically recovering cancelled appointment slots
+            by offering them to customers who already have bookings in the future.[page:1][file:16]
+          </p>
+          <ol class="steps-line">
+            <li>
+              <span class="steps-label">1</span>
+              <div class="steps-text">
+                <div class="steps-title">Add today’s appointments</div>
+                <div class="steps-body">
+                  Drop in the jobs you’ve already booked so SlotRescue knows exactly when you’re busy and when you’re free.[page:1][file:16]
+                </div>
+              </div>
+            </li>
+            <li>
+              <span class="steps-label">2</span>
+              <div class="steps-text">
+                <div class="steps-title">Mark who is flexible</div>
+                <div class="steps-body">
+                  Build a short‑notice list of customers who are happy to come earlier if a slot opens.[page:1][file:16]
+                </div>
+              </div>
+            </li>
+            <li>
+              <span class="steps-label">3</span>
+              <div class="steps-text">
+                <div class="steps-title">Let cancellations auto‑fill</div>
+                <div class="steps-body">
+                  When someone cancels, SlotRescue messages that list and confirms the first reply.
+                  Your diary stays full automatically.[page:1][file:16]
+                </div>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
 
-    <section id="pricing" class="section">
-      <div class="container section-inner">
-        <h2>Simple, flat pricing</h2>
-        <p class="section-intro">Try it with your real customers before you pay anything.</p>
-        <div class="pricing-grid js-fade-pricing">
-          <div class="pricing-card">
-            <h3>Monthly</h3>
-            <p class="price">£20</p>
-            <p>Per month, unlimited SMS alerts.</p>
-          </div>
-          <div class="pricing-card pricing-card--highlight">
-            <h3>Annual</h3>
-            <p class="price">£120</p>
-            <p>Per year — pay once, use all year.</p>
-            <p class="badge">Early access pricing — limited to the first 200 businesses.</p>
+      <section id="pricing" class="section">
+        <div class="container section-inner">
+          <h2>Simple, flat pricing</h2>
+          <div class="pricing-shell">
+            <div class="pricing-copy">
+              <p class="section-intro">
+                Try SlotRescue with your real customers before you pay anything.[page:1][file:16]
+              </p>
+              <p class="pricing-detail">
+                If the system fills just one additional appointment per month worth £50, it already pays for itself.
+                If it fills one appointment per week, the recovered revenue could exceed £200 per month.[file:16]
+              </p>
+            </div>
+            <div class="pricing-card">
+              <h3>Early access pricing</h3>
+              <div class="price-row">
+                <span class="price">£20</span>
+                <span class="price-unit">per month</span>
+              </div>
+              <div class="pricing-detail">Unlimited SMS alerts, no setup fees.</div>
+              <div class="price-row" style="margin-top:0.7rem;">
+                <span class="price">£120</span>
+                <span class="price-unit">per year</span>
+              </div>
+              <div class="pricing-detail">Pay once, use all year.</div>
+              <div class="badge">Limited to the first 200 businesses</div>
+              <p class="note">Free until your first filled appointment. No card required.[page:1][file:16]</p>
+            </div>
           </div>
         </div>
-        <p class="note">Free until your first filled appointment. No card required.</p>
+      </section>
+
+      <section id="contact" class="section section-contact">
+        <div class="container section-inner">
+          <h2>Questions?</h2>
+          <p>Email <a href="mailto:hello@slotrescue.co.uk">hello@slotrescue.co.uk</a> and we’ll get back within one business day.[page:1]</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>
+          SlotRescue is a product by
+          <a href="https://zanclelabs.com" target="_blank" rel="noopener">ZancleLabs</a>.
+        </p>
       </div>
-    </section>
-
-    <section id="contact" class="section section-contact">
-      <div class="container section-inner">
-        <h2>Questions?</h2>
-        <p>Email <a href="mailto:hello@slotrescue.co.uk">hello@slotrescue.co.uk</a> and we’ll get back within one business day.</p>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <p>
-        SlotRescue is a product by
-        <a href="https://zanclelabs.com" target="_blank" rel="noopener">ZancleLabs</a>.
-      </p>
-    </div>
-  </footer>
-
-  <script>
-    (function () {
-      const fadeCards = document.querySelectorAll('.js-fade-cards .card');
-      const steps = document.querySelector('.js-steps');
-      const pricingCards = document.querySelectorAll('.js-fade-pricing .pricing-card');
-
-      if ('IntersectionObserver' in window) {
-        const cardObserver = new IntersectionObserver(
-          entries => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add('card--visible');
-                cardObserver.unobserve(entry.target);
-              }
-            });
-          },
-          { threshold: 0.15 }
-        );
-        fadeCards.forEach(card => cardObserver.observe(card));
-
-        const stepsObserver = new IntersectionObserver(
-          entries => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                steps.classList.add('steps-visible');
-                stepsObserver.unobserve(entry.target);
-              }
-            });
-          },
-          { threshold: 0.2 }
-        );
-        if (steps) stepsObserver.observe(steps);
-
-        const pricingObserver = new IntersectionObserver(
-          entries => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add('pricing-card--visible');
-                pricingObserver.unobserve(entry.target);
-              }
-            });
-          },
-          { threshold: 0.15 }
-        );
-        pricingCards.forEach(card => pricingObserver.observe(card));
-      } else {
-        fadeCards.forEach(card => card.classList.add('card--visible'));
-        if (steps) steps.classList.add('steps-visible');
-        pricingCards.forEach(card => card.classList.add('pricing-card--visible'));
-      }
-    })();
-  </script>
+    </footer>
+  </div>
 </body>
 </html>
