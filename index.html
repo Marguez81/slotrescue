@@ -16,7 +16,7 @@
 body{
 margin:0;
 font-family:Inter, system-ui;
-background:#f7f9fc;
+background:#f8fafc;
 color:#0f172a;
 }
 
@@ -45,7 +45,7 @@ margin-right:10px;
 }
 
 nav a{
-margin-left:30px;
+margin-left:28px;
 text-decoration:none;
 color:#475569;
 font-weight:500;
@@ -79,7 +79,7 @@ margin-bottom:30px;
 display:inline-block;
 background:#3b6df6;
 color:white;
-padding:16px 30px;
+padding:16px 32px;
 border-radius:10px;
 font-weight:600;
 text-decoration:none;
@@ -108,17 +108,9 @@ border-radius:8px;
 margin-bottom:10px;
 }
 
-.cancel{
-background:#ffe4e4;
-}
-
-.sms{
-background:#e7edff;
-}
-
-.confirm{
-background:#dff7e6;
-}
+.cancel{background:#ffe4e4}
+.sms{background:#e7edff}
+.confirm{background:#dff7e6}
 
 .stats{
 margin-top:10px;
@@ -152,6 +144,36 @@ text-align:left;
 
 .feature h3{
 margin-bottom:8px;
+}
+
+.pricing{
+margin-top:120px;
+text-align:center;
+}
+
+.pricing-cards{
+display:flex;
+justify-content:center;
+gap:40px;
+flex-wrap:wrap;
+margin-top:40px;
+}
+
+.card{
+background:white;
+padding:40px;
+border-radius:16px;
+box-shadow:0 10px 30px rgba(0,0,0,0.06);
+width:260px;
+}
+
+.card.highlight{
+border:2px solid #3b6df6;
+}
+
+.price{
+font-size:36px;
+font-weight:700;
 }
 
 .contact{
@@ -205,6 +227,7 @@ SlotRescue
 
 <div>
 <a href="#features">Features</a>
+<a href="#pricing">Pricing</a>
 <a href="mailto:hello@slotrescue.co.uk">Contact</a>
 </div>
 
@@ -224,9 +247,7 @@ Automatically offer cancelled slots to other customers and keep your schedule fu
 No integrations required.
 </p>
 
-<a href="/start" class="cta">
-Start free today
-</a>
+<a href="/start" class="cta">Start free today</a>
 
 <div class="sub">
 Free until your first filled appointment
@@ -267,38 +288,66 @@ SMS alerts sent to customers
 <div class="features">
 
 <div class="feature">
-
 <h3>Fill empty slots instantly</h3>
-
 <p>
 When an appointment is cancelled, SlotRescue automatically offers the slot to other customers.
 </p>
-
 </div>
 
-
 <div class="feature">
-
 <h3>Automatic SMS alerts</h3>
-
 <p>
 Customers receive instant notifications when new slots become available.
 </p>
-
 </div>
 
-
 <div class="feature">
-
 <h3>Works with your workflow</h3>
-
 <p>
 Add appointments manually or import them if you already use a system.
 </p>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="pricing" id="pricing">
+
+<h2>Simple pricing</h2>
+
+<p style="color:#64748b">
+Free until your first filled appointment
+</p>
+
+<div class="pricing-cards">
+
+<div class="card">
+
+<h3>Monthly</h3>
+
+<div class="price">£20</div>
+
+<p>per month</p>
+
+</div>
+
+<div class="card highlight">
+
+<h3>Annual</h3>
+
+<div class="price">£120</div>
+
+<p>per year</p>
 
 </div>
 
 </div>
+
+<p style="margin-top:25px;color:#64748b">
+Early access pricing — limited to the first 200 businesses
+</p>
 
 </div>
 
@@ -308,11 +357,9 @@ Add appointments manually or import them if you already use a system.
 <h2>Questions?</h2>
 
 <p>
-
 <a href="mailto:hello@slotrescue.co.uk">
 hello@slotrescue.co.uk
 </a>
-
 </p>
 
 </div>
