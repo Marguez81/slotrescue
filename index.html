@@ -141,7 +141,7 @@
       background:#020617;
       border-radius:24px;
       padding:26px 26px 30px;
-      box-shadow:0 22px 55px rgba(15,23,42,0.55);
+      box-shadow:0 18px 45px rgba(15,23,42,0.4);
       font-size:15px;
       color:#e5e7eb;
       position:relative;
@@ -210,10 +210,6 @@
       color:#e5e7eb;
     }
 
-    .preview-row-right span{
-      display:inline-block;
-    }
-
     .preview-text-muted{
       color:#9ca3af;
       font-size:14px;
@@ -248,10 +244,9 @@
       color:#e5e7eb;
     }
 
-    /* Effetto digitazione a cascata */
+    /* Effetto digitazione SOLO sulla riga verde */
 
     .type-step{
-      opacity:0;
       border-right:2px solid transparent;
       white-space:nowrap;
       overflow:hidden;
@@ -259,18 +254,12 @@
     }
 
     .type-cursor{
-      border-right-color:#e5e7eb;
+      border-right-color:#4ade80;
       animation:blink 0.8s step-end infinite;
     }
 
     @keyframes blink{
       50%{ border-right-color:transparent; }
-    }
-
-    /* container di ogni riga "scritto" */
-    .type-line{
-      display:block;
-      min-height:1.2em;
     }
 
     .feature-grid{
@@ -400,29 +389,33 @@
     <div class="preview-panel">
       <div class="preview-panel-title">Booked appointments</div>
       <div class="preview-row">
-        <span class="preview-row-left type-line" data-text="09:00"></span>
-        <span class="preview-row-right type-line" data-text="MOT Test ✓"></span>
+        <span class="preview-row-left">09:00</span>
+        <span class="preview-row-right">MOT Test ✓</span>
       </div>
       <div class="preview-row">
-        <span class="preview-row-left type-line" data-text="10:00"></span>
-        <span class="preview-row-right type-line" data-text="Service ✓"></span>
+        <span class="preview-row-left">10:00</span>
+        <span class="preview-row-right">Service ✓</span>
       </div>
       <div class="preview-row">
-        <span class="preview-row-left type-line" data-text="11:00"></span>
-        <span class="preview-row-right type-line" data-text="Cancelled"></span>
+        <span class="preview-row-left">11:00</span>
+        <span class="preview-row-right">Cancelled</span>
       </div>
     </div>
 
     <div class="preview-panel">
       <div class="preview-panel-title">SlotRescue in action</div>
-      <div class="type-line preview-text-muted" data-text="SMS sent to short-notice list..."></div>
-      <div class="type-line preview-text-green" data-text="Customer accepted earlier slot ✓"></div>
-      <div class="preview-footer type-line" data-text="Appointment filled automatically. Original slot is now free to fill another booking."></div>
+      <div class="preview-text-muted">SMS sent to short-notice list...</div>
+      <div class="preview-text-green">
+        <span id="typing-line" data-text="Customer accepted earlier slot ✓"></span>
+      </div>
+      <div class="preview-footer">
+        Appointment filled automatically. Original slot is now free to fill another booking.
+      </div>
     </div>
 
     <div class="preview-pillbar">
-      <span class="preview-pill type-line" data-text="Works with clinics, garages, salons"></span>
-      <span class="preview-pill type-line" data-text="No extra calls or admin"></span>
+      <span class="preview-pill">Works with clinics, garages, salons</span>
+      <span class="preview-pill">No extra calls or admin</span>
     </div>
   </div>
 </section>
@@ -560,9 +553,9 @@
       sections.forEach(sec => sec.classList.add('visible'));
     }
 
-    // Animazione di digitazione a cascata nella card
+    // Digitazione solo sulla riga verde
     const preview = document.querySelector('.preview');
-    const typeLines = preview ? preview.querySelectorAll('.type-line') : [];
+    const typingTarget = document.getElementById('typing-line');
 
     function typeLine(element, text, speed){
       return new Promise(resolve => {
@@ -583,35 +576,28 @@
       });
     }
 
-    async function runTypingSequence(){
-      if (!preview || !typeLines.length) return;
-
-      const speed = 18; // ms per carattere
-      preview.style.transform = 'translateY(-2px)';
-      preview.style.boxShadow = '0 26px 70px rgba(15,23,42,0.7)';
-
-      for (const line of typeLines){
-        const text = line.getAttribute('data-text') || '';
-        if (!text) continue;
-        await typeLine(line, text, speed);
-      }
+    async function runTyping(){
+      if (!preview || !typingTarget) return;
+      const text = typingTarget.getAttribute('data-text') || '';
+      if (!text) return;
+      await typeLine(typingTarget, text, 18); // abbastanza veloce
     }
 
-    if (preview && 'IntersectionObserver' in window){
-      const previewObserver = new IntersectionObserver(
+    if (preview && typingTarget && 'IntersectionObserver' in window){
+      const observerTyping = new IntersectionObserver(
         entries => {
           entries.forEach(entry => {
             if (entry.isIntersecting){
-              runTypingSequence();
-              previewObserver.unobserve(preview);
+              runTyping();
+              observerTyping.unobserve(preview);
             }
           });
         },
-        { threshold:0.5 }
+        { threshold: 0.5 }
       );
-      previewObserver.observe(preview);
-    } else if (preview){
-      runTypingSequence();
+      observerTyping.observe(preview);
+    } else {
+      runTyping();
     }
   })();
 </script>
