@@ -6,7 +6,6 @@
 
   <title>SlotRescue</title>
 
-  <!-- Favicon: usa il tuo favicon attuale -->
   <link rel="icon" href="/favicon.png?v=2" type="image/png">
 
   <style>
@@ -15,6 +14,7 @@
       margin:0;
       background:#ffffff;
       color:#111;
+      -webkit-font-smoothing:antialiased;
     }
 
     a{ color:inherit; }
@@ -135,44 +135,142 @@
       margin-top:20px;
     }
 
+    /* Card scura */
+
     .preview{
-      background:#f5f7fb;
-      border-radius:12px;
-      padding:30px;
-      box-shadow:0 10px 40px rgba(0,0,0,0.08);
-      font-size:16px;
-      border:1px solid rgba(37,99,235,0.00);
-      transition:box-shadow 0.4s ease,border-color 0.4s ease,transform 0.4s ease;
+      background:#020617;
+      border-radius:24px;
+      padding:26px 26px 30px;
+      box-shadow:0 22px 55px rgba(15,23,42,0.55);
+      font-size:15px;
+      color:#e5e7eb;
+      position:relative;
+      border:1px solid #0b1220;
+      overflow:hidden;
     }
 
-    /* Steps nella preview: animazione a cascata */
+    .preview-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:18px;
+      font-size:14px;
+      color:#cbd5f5;
+    }
 
-    .preview-step{
+    .badge-auto{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:4px 12px;
+      border-radius:999px;
+      background:rgba(22,163,74,0.2);
+      color:#bbf7d0;
+      font-size:12px;
+      font-weight:600;
+      letter-spacing:0.06em;
+      text-transform:uppercase;
+    }
+
+    .badge-dot{
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:#22c55e;
+      box-shadow:0 0 0 4px rgba(34,197,94,0.35);
+    }
+
+    .preview-panel{
+      border-radius:18px;
+      border:1px solid rgba(148,163,184,0.35);
+      padding:18px 20px 16px;
+      margin-bottom:14px;
+    }
+
+    .preview-panel-title{
+      font-size:13px;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+      color:#9ca3af;
+      margin-bottom:10px;
+    }
+
+    .preview-row{
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:6px;
+      font-size:14px;
+    }
+
+    .preview-row-left{
+      color:#e5e7eb;
+    }
+
+    .preview-row-right{
+      color:#e5e7eb;
+    }
+
+    .preview-row-right span{
       display:inline-block;
+    }
+
+    .preview-text-muted{
+      color:#9ca3af;
+      font-size:14px;
+    }
+
+    .preview-text-green{
+      color:#4ade80;
+      font-size:14px;
+    }
+
+    .preview-footer{
+      margin-top:12px;
+      padding-top:12px;
+      border-top:1px dashed rgba(148,163,184,0.45);
+      font-size:13px;
+      color:#cbd5f5;
+    }
+
+    .preview-pillbar{
+      margin-top:14px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .preview-pill{
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid rgba(129,140,248,0.5);
+      background:rgba(30,64,175,0.55);
+      font-size:12px;
+      color:#e5e7eb;
+    }
+
+    /* Effetto digitazione a cascata */
+
+    .type-step{
       opacity:0;
-      transform:translateY(8px);
-      transition:opacity 0.35s ease,transform 0.35s ease;
+      border-right:2px solid transparent;
+      white-space:nowrap;
+      overflow:hidden;
+      display:inline-block;
     }
 
-    .preview-animate .preview-step{
-      opacity:1;
-      transform:translateY(0);
+    .type-cursor{
+      border-right-color:#e5e7eb;
+      animation:blink 0.8s step-end infinite;
     }
 
-    .preview-animate .preview-step-1{ transition-delay:0.00s; }
-    .preview-animate .preview-step-2{ transition-delay:0.10s; }
-    .preview-animate .preview-step-3{ transition-delay:0.20s; }
-    .preview-animate .preview-step-4{ transition-delay:0.30s; }
-    .preview-animate .preview-step-5{ transition-delay:0.40s; }
-    .preview-animate .preview-step-6{ transition-delay:0.50s; }
-    .preview-animate .preview-step-7{ transition-delay:0.60s; }
+    @keyframes blink{
+      50%{ border-right-color:transparent; }
+    }
 
-    /* Effetto "breathe" del box quando parte la sequenza */
-
-    .preview-animate{
-      box-shadow:0 18px 55px rgba(37,99,235,0.18);
-      border-color:rgba(37,99,235,0.35);
-      transform:translateY(-2px);
+    /* container di ogni riga "scritto" */
+    .type-line{
+      display:block;
+      min-height:1.2em;
     }
 
     .feature-grid{
@@ -239,6 +337,10 @@
       .nav{
         display:none;
       }
+
+      .preview{
+        margin-top:20px;
+      }
     }
   </style>
 </head>
@@ -248,49 +350,80 @@
 <header class="site-header">
   <div class="header-inner">
     <div class="header-left">
-      <!-- usa il tuo logo attuale -->
       <img src="logo-slotrescue.png" alt="SlotRescue" class="logo-img">
     </div>
     <nav class="nav">
       <a href="#how">How it works</a>
       <a href="#pricing">Pricing</a>
       <a href="#login" class="nav-login">Login</a>
+      <a href="mailto:hello@slotrescue.co.uk?subject=SlotRescue%20early%20access" class="nav-cta">Get early access</a>
     </nav>
   </div>
 </header>
 
 <section class="container hero fade-section">
   <div>
+    <p style="letter-spacing:0.18em;text-transform:uppercase;font-size:12px;color:#4f46e5;background:#eef2ff;display:inline-block;padding:6px 12px;border-radius:999px;margin-bottom:16px;">
+      Fill cancelled appointments automatically
+    </p>
+
     <h1>
       Stop losing money from cancelled appointments
     </h1>
 
     <p>
       SlotRescue automatically fills last-minute cancellations by offering earlier appointments
-      to customers who already booked.
+      to customers who already booked, so your diary stays full.
     </p>
 
     <a class="button" href="mailto:hello@slotrescue.co.uk?subject=SlotRescue%20early%20access">
       Start for free
     </a>
 
-    <p style="margin-top:15px;color:#777">
+    <a style="margin-left:12px;font-weight:500;" href="#how">See how it works</a>
+
+    <p style="margin-top:15px;color:#777;font-size:14px;">
+      <span style="display:inline-flex;align-items:center;margin-right:12px;">
+        <span style="width:8px;height:8px;border-radius:999px;background:#22c55e;box-shadow:0 0 0 4px rgba(34,197,94,0.25);margin-right:6px;"></span>
+        Live with real businesses
+      </span>
       Free until SlotRescue fills your first appointment
     </p>
   </div>
 
   <div class="preview">
-    <strong class="preview-step preview-step-1">Today's appointments</strong>
-    <br><br>
-    <span class="preview-step preview-step-2">09:00 – MOT Test ✔</span><br>
-    <span class="preview-step preview-step-3">10:00 – Service ✔</span><br>
-    <span class="preview-step preview-step-4">11:00 – Cancelled</span>
-    <br><br>
-    <strong class="preview-step preview-step-5">SlotRescue notification sent</strong>
-    <br><br>
-    <span class="preview-step preview-step-6">Customer accepted earlier slot ✔</span>
-    <br><br>
-    <strong class="preview-step preview-step-7">Appointment filled automatically</strong>
+    <div class="preview-header">
+      <span>Today’s schedule</span>
+      <span class="badge-auto"><span class="badge-dot"></span>Auto-fill on</span>
+    </div>
+
+    <div class="preview-panel">
+      <div class="preview-panel-title">Booked appointments</div>
+      <div class="preview-row">
+        <span class="preview-row-left type-line" data-text="09:00"></span>
+        <span class="preview-row-right type-line" data-text="MOT Test ✓"></span>
+      </div>
+      <div class="preview-row">
+        <span class="preview-row-left type-line" data-text="10:00"></span>
+        <span class="preview-row-right type-line" data-text="Service ✓"></span>
+      </div>
+      <div class="preview-row">
+        <span class="preview-row-left type-line" data-text="11:00"></span>
+        <span class="preview-row-right type-line" data-text="Cancelled"></span>
+      </div>
+    </div>
+
+    <div class="preview-panel">
+      <div class="preview-panel-title">SlotRescue in action</div>
+      <div class="type-line preview-text-muted" data-text="SMS sent to short-notice list..."></div>
+      <div class="type-line preview-text-green" data-text="Customer accepted earlier slot ✓"></div>
+      <div class="preview-footer type-line" data-text="Appointment filled automatically. Original slot is now free to fill another booking."></div>
+    </div>
+
+    <div class="preview-pillbar">
+      <span class="preview-pill type-line" data-text="Works with clinics, garages, salons"></span>
+      <span class="preview-pill type-line" data-text="No extra calls or admin"></span>
+    </div>
   </div>
 </section>
 
@@ -427,25 +560,58 @@
       sections.forEach(sec => sec.classList.add('visible'));
     }
 
-    // Animazione a cascata nella preview
+    // Animazione di digitazione a cascata nella card
     const preview = document.querySelector('.preview');
+    const typeLines = preview ? preview.querySelectorAll('.type-line') : [];
 
-    if (preview && 'IntersectionObserver' in window) {
+    function typeLine(element, text, speed){
+      return new Promise(resolve => {
+        let i = 0;
+        const span = document.createElement('span');
+        span.className = 'type-step type-cursor';
+        element.appendChild(span);
+
+        const interval = setInterval(() => {
+          span.textContent = text.slice(0, i);
+          i++;
+          if (i > text.length){
+            clearInterval(interval);
+            span.classList.remove('type-cursor');
+            resolve();
+          }
+        }, speed);
+      });
+    }
+
+    async function runTypingSequence(){
+      if (!preview || !typeLines.length) return;
+
+      const speed = 18; // ms per carattere
+      preview.style.transform = 'translateY(-2px)';
+      preview.style.boxShadow = '0 26px 70px rgba(15,23,42,0.7)';
+
+      for (const line of typeLines){
+        const text = line.getAttribute('data-text') || '';
+        if (!text) continue;
+        await typeLine(line, text, speed);
+      }
+    }
+
+    if (preview && 'IntersectionObserver' in window){
       const previewObserver = new IntersectionObserver(
         entries => {
           entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              preview.classList.add('preview-animate');
+            if (entry.isIntersecting){
+              runTypingSequence();
               previewObserver.unobserve(preview);
             }
           });
         },
-        { threshold: 0.4 }
+        { threshold:0.5 }
       );
-
       previewObserver.observe(preview);
-    } else if (preview) {
-      preview.classList.add('preview-animate');
+    } else if (preview){
+      runTypingSequence();
     }
   })();
 </script>
