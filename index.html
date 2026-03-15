@@ -1,564 +1,494 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>SlotRescue</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Favicons: usa favicon.png nella root del sito -->
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=3">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon.png?v=3">
-  <link rel="shortcut icon" href="favicon.png?v=3">
+<title>SlotRescue — Fill cancelled appointments automatically</title>
 
-  <!-- Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=3">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon.png?v=3">
+<link rel="shortcut icon" href="favicon.png?v=3">
 
-  <style>
-    body{
-      font-family:'Inter',sans-serif;
-      margin:0;
-      background:#f8fafc;
-      color:#111827;
-      -webkit-font-smoothing:antialiased;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    .container{
-      max-width:1200px;
-      margin:auto;
-      padding:40px 20px;
-    }
+<style>
 
-    header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:20px 40px;
-      background:white;
-      box-shadow:0 2px 8px rgba(0,0,0,0.04);
-      position:sticky;
-      top:0;
-      z-index:10;
-    }
+body{
+font-family:'Inter',sans-serif;
+margin:0;
+background:#f8fafc;
+color:#111827;
+-webkit-font-smoothing:antialiased;
+}
 
-    .logo{
-      display:flex;
-      align-items:center;
-    }
+.container{
+max-width:1200px;
+margin:auto;
+padding:40px 20px;
+}
 
-    .logo img{
-      height:36px;
-      display:block;
-    }
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 40px;
+background:white;
+box-shadow:0 2px 8px rgba(0,0,0,0.04);
+position:sticky;
+top:0;
+z-index:10;
+}
 
-    nav a{
-      margin-left:25px;
-      text-decoration:none;
-      color:#374151;
-      font-weight:500;
-    }
+.logo img{
+height:36px;
+}
 
-    nav a:hover{
-      color:#111827;
-    }
+nav a{
+margin-left:25px;
+text-decoration:none;
+color:#374151;
+font-weight:500;
+}
 
-    .hero{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:60px;
-      align-items:center;
-      padding:100px 0;
-      animation:fadeUp 1s ease;
-    }
+.hero{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:60px;
+align-items:center;
+padding:100px 0;
+animation:fadeUp 1s ease;
+}
 
-    .hero h1{
-      font-size:48px;
-      line-height:1.1;
-      margin-bottom:20px;
-    }
+.hero h1{
+font-size:48px;
+line-height:1.1;
+margin-bottom:20px;
+}
 
-    .hero p{
-      font-size:18px;
-      color:#6b7280;
-      margin-bottom:30px;
-    }
+.hero p{
+font-size:18px;
+color:#6b7280;
+margin-bottom:30px;
+}
 
-    .hero-pill{
-      display:inline-block;
-      padding:6px 14px;
-      border-radius:999px;
-      background:#eef2ff;
-      color:#4f46e5;
-      font-size:12px;
-      font-weight:600;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      margin-bottom:16px;
-    }
+.hero-pill{
+display:inline-block;
+padding:6px 14px;
+border-radius:999px;
+background:#eef2ff;
+color:#4f46e5;
+font-size:12px;
+font-weight:600;
+letter-spacing:.14em;
+text-transform:uppercase;
+margin-bottom:16px;
+}
 
-    .cta{
-      background:#2563eb;
-      color:white;
-      padding:16px 30px;
-      border-radius:10px;
-      text-decoration:none;
-      font-weight:600;
-      display:inline-block;
-      transition:all .25s ease;
-    }
+.cta{
+background:#2563eb;
+color:white;
+padding:16px 30px;
+border-radius:10px;
+text-decoration:none;
+font-weight:600;
+display:inline-block;
+transition:all .25s ease;
+}
 
-    .cta:hover{
-      background:#1d4ed8;
-      transform:scale(1.04);
-      box-shadow:0 14px 30px rgba(37,99,235,0.35);
-    }
+.cta:hover{
+background:#1d4ed8;
+transform:scale(1.04);
+box-shadow:0 14px 30px rgba(37,99,235,0.35);
+}
 
-    .hero-meta{
-      margin-top:12px;
-      color:#6b7280;
-      font-size:14px;
-    }
+.hero-meta{
+margin-top:12px;
+color:#6b7280;
+font-size:14px;
+}
 
-    .hero-meta span{
-      display:inline-flex;
-      align-items:center;
-      margin-right:14px;
-    }
+.hero-meta-dot{
+width:8px;
+height:8px;
+border-radius:999px;
+background:#22c55e;
+box-shadow:0 0 0 4px rgba(34,197,94,0.25);
+margin-right:6px;
+}
 
-    .hero-meta-dot{
-      width:8px;
-      height:8px;
-      border-radius:999px;
-      background:#22c55e;
-      box-shadow:0 0 0 4px rgba(34,197,94,0.25);
-      margin-right:6px;
-    }
+.mockup{
+background:#020617;
+border-radius:18px;
+padding:24px;
+box-shadow:0 18px 45px rgba(15,23,42,0.55);
+color:#e5e7eb;
+}
 
-    /* Mockup */
+.metrics{
+display:flex;
+gap:16px;
+margin-bottom:20px;
+}
 
-    .mockup{
-      background:#020617;
-      border-radius:18px;
-      padding:24px 24px 26px;
-      box-shadow:0 18px 45px rgba(15,23,42,0.55);
-      color:#e5e7eb;
-    }
+.metric{
+flex:1;
+background:#0b1120;
+padding:16px;
+border-radius:12px;
+font-size:13px;
+border:1px solid rgba(148,163,184,0.35);
+}
 
-    .mockup-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:18px;
-      font-size:14px;
-      color:#cbd5f5;
-    }
+.metric strong{
+display:block;
+font-size:20px;
+margin-top:4px;
+}
 
-    .mockup-badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:4px 12px;
-      border-radius:999px;
-      background:rgba(22,163,74,0.2);
-      color:#bbf7d0;
-      font-size:12px;
-      font-weight:600;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
+.section{
+padding:100px 0;
+text-align:center;
+opacity:0;
+transform:translateY(40px);
+transition:all .8s ease;
+}
 
-    .mockup-badge-dot{
-      width:8px;
-      height:8px;
-      border-radius:999px;
-      background:#22c55e;
-      box-shadow:0 0 0 4px rgba(34,197,94,0.35);
-    }
+.section.visible{
+opacity:1;
+transform:translateY(0);
+}
 
-    .metrics{
-      display:flex;
-      gap:16px;
-      margin-bottom:20px;
-    }
+.section h2{
+font-size:34px;
+margin-bottom:14px;
+}
 
-    .metric{
-      flex:1;
-      background:#0b1120;
-      padding:16px 18px;
-      border-radius:12px;
-      font-size:13px;
-      color:#e5e7eb;
-      border:1px solid rgba(148,163,184,0.35);
-    }
+.section p{
+font-size:17px;
+color:#6b7280;
+max-width:640px;
+margin:0 auto 24px;
+}
 
-    .metric strong{
-      display:block;
-      font-size:20px;
-      margin-top:4px;
-    }
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+margin-top:40px;
+}
 
-    .mockup-body{
-      font-size:14px;
-    }
+.card{
+background:white;
+padding:30px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.05);
+transition:all .25s ease;
+}
 
-    .mockup-body p{
-      margin:4px 0;
-    }
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 18px 40px rgba(0,0,0,0.10);
+}
 
-    .mockup-body .cancelled{
-      color:#f97373;
-      font-weight:600;
-      margin-top:10px;
-    }
+.price{
+font-size:48px;
+font-weight:700;
+margin:20px 0 10px;
+}
 
-    .mockup-divider{
-      margin:14px 0;
-      border-top:1px dashed rgba(148,163,184,0.45);
-    }
+.faq{
+max-width:720px;
+margin:auto;
+text-align:left;
+}
 
-    .mockup-section-title{
-      margin-top:10px;
-      margin-bottom:6px;
-      font-weight:600;
-      color:#cbd5f5;
-    }
+.faq-item{
+margin-bottom:24px;
+}
 
-    .mockup-sms{
-      color:#9ca3af;
-      margin-bottom:4px;
-    }
+footer{
+background:#111827;
+color:white;
+padding:60px 40px;
+margin-top:100px;
+}
 
-    .mockup-green{
-      color:#4ade80;
-      font-weight:500;
-      transition:color .3s ease;
-    }
+footer a{
+color:#93c5fd;
+text-decoration:none;
+}
 
-    .mockup-green.highlight{
-      color:#bbf7d0;
-    }
+.footer-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:40px;
+}
 
-    .mockup-cta{
-      margin-top:14px;
-      display:inline-block;
-      padding:10px 18px;
-      border-radius:999px;
-      background:#1d4ed8;
-      color:white;
-      font-size:13px;
-      font-weight:500;
-    }
+.footer-muted{
+margin-top:40px;
+color:#9ca3af;
+font-size:13px;
+}
 
-    .section{
-      padding:100px 0;
-      text-align:center;
-      opacity:0;
-      transform:translateY(40px);
-      transition:all .8s ease;
-    }
+@keyframes fadeUp{
+0%{opacity:0;transform:translateY(40px);}
+100%{opacity:1;transform:translateY(0);}
+}
 
-    .section.visible{
-      opacity:1;
-      transform:translateY(0);
-    }
+@media(max-width:900px){
 
-    .section h2{
-      font-size:34px;
-      margin-bottom:14px;
-    }
+.hero{
+grid-template-columns:1fr;
+}
 
-    .section p{
-      font-size:17px;
-      color:#6b7280;
-      max-width:640px;
-      margin:0 auto 24px;
-    }
+.hero h1{
+font-size:32px;
+}
 
-    .cards{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-      gap:30px;
-      margin-top:40px;
-    }
+nav{
+display:none;
+}
 
-    .card{
-      background:white;
-      padding:30px;
-      border-radius:12px;
-      box-shadow:0 5px 15px rgba(0,0,0,0.05);
-      transition:all .25s ease;
-    }
+}
 
-    .card:hover{
-      transform:translateY(-6px);
-      box-shadow:0 18px 40px rgba(0,0,0,0.10);
-    }
-
-    .price{
-      font-size:48px;
-      font-weight:700;
-      margin:20px 0 10px;
-    }
-
-    footer{
-      background:#111827;
-      color:white;
-      padding:60px 40px;
-      margin-top:100px;
-    }
-
-    footer a{
-      color:#93c5fd;
-      text-decoration:none;
-    }
-
-    .footer-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-      gap:40px;
-    }
-
-    footer p{
-      margin:6px 0;
-      font-size:14px;
-    }
-
-    .footer-muted{
-      margin-top:40px;
-      color:#9ca3af;
-      font-size:13px;
-    }
-
-    @keyframes fadeUp{
-      0%{opacity:0;transform:translateY(40px);}
-      100%{opacity:1;transform:translateY(0);}
-    }
-
-    @media(max-width:900px){
-      header{
-        padding:14px 20px;
-      }
-      .hero{
-        grid-template-columns:1fr;
-        padding:60px 0 40px;
-      }
-      .hero h1{
-        font-size:32px;
-      }
-      nav{
-        display:none;
-      }
-    }
-  </style>
+</style>
 </head>
 
 <body>
 
 <header>
-  <div class="logo">
-    <img src="logo-slotrescue.png" alt="SlotRescue">
-  </div>
 
-  <nav>
-    <a href="#how">How it works</a>
-    <a href="#business-types">Business types</a>
-    <a href="#pricing">Pricing</a>
-  </nav>
+<div class="logo">
+<img src="logo-slotrescue.png" alt="SlotRescue">
+</div>
+
+<nav>
+<a href="#how">How it works</a>
+<a href="#business-types">Business types</a>
+<a href="#pricing">Pricing</a>
+</nav>
+
 </header>
 
 <div class="container hero">
-  <div>
-    <div class="hero-pill">Fill cancelled appointments automatically</div>
 
-    <h1>Keep more of your appointment slots filled</h1>
+<div>
 
-    <p>
-      SlotRescue offers newly cancelled appointments to customers who already have future bookings,
-      so fewer slots stay empty whether you run a clinic, salon, or garage.
-    </p>
+<div class="hero-pill">Fill cancelled appointments automatically</div>
 
-    <a class="cta" href="mailto:hello@slotrescue.co.uk?subject=SlotRescue%20early%20access">
-      Start free today
-    </a>
+<h1>Recover revenue from cancelled appointments</h1>
 
-    <div class="hero-meta">
-      <span><span class="hero-meta-dot"></span>Live with real businesses</span>
-      <span>Free until your first slot is filled</span>
-    </div>
-  </div>
+<p>
+SlotRescue automatically offers cancelled slots to customers who already have future bookings, so fewer appointments stay empty.
+</p>
 
-  <div class="mockup">
-    <div class="mockup-header">
-      <span>Today’s schedule</span>
-      <span class="mockup-badge"><span class="mockup-badge-dot"></span>Auto‑fill on</span>
-    </div>
+<a class="cta" href="mailto:hello@slotrescue.co.uk?subject=SlotRescue%20early%20access">
+Start free today
+</a>
 
-    <div class="metrics">
-      <div class="metric">
-        Slots rescued
-        <strong id="slots">0</strong>
-      </div>
-      <div class="metric">
-        Recovered revenue
-        <strong>£<span id="revenue">0</span></strong>
-      </div>
-    </div>
+<div class="hero-meta">
+<span><span class="hero-meta-dot"></span>Free until your first slot is filled</span>
+</div>
 
-    <div class="mockup-body">
-      <p><strong>Today</strong></p>
-      <p>09:00 — Hygiene check — Dental clinic</p>
-      <p>10:00 — MOT Test — Garage</p>
-      <p>11:00 — Physio follow‑up — Clinic</p>
+</div>
 
-      <p class="cancelled">15:00 — Slot cancelled</p>
+<div class="mockup">
 
-      <div class="mockup-divider"></div>
+<div class="metrics">
+<div class="metric">
+Slots rescued
+<strong id="slots">0</strong>
+</div>
 
-      <p class="mockup-section-title">SlotRescue in action</p>
-      <p class="mockup-sms">SMS sent to short‑notice list…</p>
-      <p id="mockup-green" class="mockup-green">Customer accepted earlier slot ✓</p>
+<div class="metric">
+Recovered revenue
+<strong>£<span id="revenue">0</span></strong>
+</div>
+</div>
 
-      <div class="mockup-divider"></div>
+<p>09:00 — Hygiene check</p>
+<p>10:00 — MOT Test</p>
+<p>11:00 — Physio follow-up</p>
 
-      <p class="mockup-sms">
-        Appointment filled automatically. Original slot is now free to fill another booking.
-      </p>
+<p style="color:#f87171;font-weight:600;margin-top:10px">
+15:00 — Slot cancelled
+</p>
 
-      <a class="mockup-cta" href="#how">⚡ See how it works</a>
-    </div>
-  </div>
+<p style="margin-top:12px;color:#9ca3af">
+SMS sent to short-notice list…
+</p>
+
+<p style="color:#4ade80;font-weight:500">
+Customer accepted earlier slot ✓
+</p>
+
+</div>
+
+</div>
+
+<div class="container section">
+
+<h2>Cancelled appointments cost businesses thousands</h2>
+
+<p>
+Even losing two £100 appointments per week means over £10,000 in lost revenue every year.
+SlotRescue helps recover that time automatically.
+</p>
+
 </div>
 
 <div id="how" class="container section">
-  <h2>How SlotRescue works</h2>
-  <p>
-    SlotRescue keeps your diary fuller by instantly offering cancelled slots to customers who already
-    have future bookings, with almost no extra admin.
-  </p>
 
-  <div class="cards">
-    <div class="card">
-      <h3>Appointment cancelled</h3>
-      <p>A customer cancels their booking and a slot becomes free.</p>
-    </div>
-    <div class="card">
-      <h3>Find ideal candidates</h3>
-      <p>SlotRescue identifies customers with later appointments who could come earlier.</p>
-    </div>
-    <div class="card">
-      <h3>Send an offer</h3>
-      <p>Customers receive a message offering the earlier slot.</p>
-    </div>
-    <div class="card">
-      <h3>Slot filled automatically</h3>
-      <p>The first customer who confirms gets the slot, and your schedule stays full.</p>
-    </div>
-  </div>
+<h2>How SlotRescue works</h2>
+
+<div class="cards">
+
+<div class="card">
+<h3>Appointment cancelled</h3>
+<p>A customer cancels their booking.</p>
+</div>
+
+<div class="card">
+<h3>Find candidates</h3>
+<p>Customers with later bookings are identified.</p>
+</div>
+
+<div class="card">
+<h3>Send notification</h3>
+<p>Customers receive a message offering the earlier slot.</p>
+</div>
+
+<div class="card">
+<h3>Slot filled</h3>
+<p>The first confirmation receives the appointment.</p>
+</div>
+
+</div>
+
 </div>
 
 <div id="business-types" class="container section">
-  <h2>Works with any appointment‑based business</h2>
-  <p>
-    SlotRescue sits alongside your existing system, whether you use practice software,
-    a calendar app, or even paper.
-  </p>
 
-  <div class="cards">
-    <div class="card">Dental & medical clinics</div>
-    <div class="card">Garages & MOT centres</div>
-    <div class="card">Beauty & aesthetic clinics</div>
-    <div class="card">Physiotherapy & wellness</div>
-    <div class="card">Hair salons & barbers</div>
-    <div class="card">Any other service that works by appointment</div>
-  </div>
+<h2>Works with any appointment-based business</h2>
+
+<div class="cards">
+
+<div class="card">Dental & medical clinics</div>
+<div class="card">Garages & MOT centres</div>
+<div class="card">Beauty clinics</div>
+<div class="card">Physiotherapists</div>
+<div class="card">Hair salons</div>
+
+</div>
+
 </div>
 
 <div id="pricing" class="container section">
-  <h2>Simple pricing</h2>
 
-  <div class="price">£20 / month</div>
-  <p>or £120 per year — early access pricing</p>
+<h2>Simple pricing</h2>
 
-  <a class="cta" href="mailto:hello@slotrescue.co.uk?subject=SlotRescue%20early%20access">
-    Start free today
-  </a>
+<div class="price">£20 / month</div>
+
+<p>or £120 per year early access pricing</p>
+
+<a class="cta" href="mailto:hello@slotrescue.co.uk">
+Start free today
+</a>
+
+</div>
+
+<div class="container section">
+
+<h2>Frequently asked questions</h2>
+
+<div class="faq">
+
+<div class="faq-item">
+<strong>Does SlotRescue replace my booking system?</strong>
+<p>No. SlotRescue works alongside your existing system.</p>
+</div>
+
+<div class="faq-item">
+<strong>Do customers need to install an app?</strong>
+<p>No. Customers simply receive an SMS notification.</p>
+</div>
+
+<div class="faq-item">
+<strong>How long does setup take?</strong>
+<p>Most businesses can start using SlotRescue in minutes.</p>
+</div>
+
+</div>
+
 </div>
 
 <footer>
-  <div class="footer-grid">
-    <div>
-      <strong>About</strong>
-      <p>SlotRescue is a tool to automatically fill cancelled appointment slots.</p>
-      <p>A product by <a href="https://zanclelabs.com">ZancleLabs</a>.</p>
-    </div>
 
-    <div>
-      <strong>Contact</strong>
-      <p>If you’d like to learn more or see a demo:</p>
-      <p><a href="mailto:hello@slotrescue.co.uk">hello@slotrescue.co.uk</a></p>
-    </div>
+<div class="footer-grid">
 
-    <div>
-      <strong>Product</strong>
-      <p>How it works</p>
-      <p>Pricing</p>
-      <p>Business types</p>
-    </div>
+<div>
+<strong>SlotRescue</strong>
+<p>Fill cancelled appointments automatically.</p>
+</div>
 
-    <div>
-      <strong>SlotRescue</strong>
-      <p>Fill cancelled appointments automatically for clinics, salons, garages, and more.</p>
-    </div>
-  </div>
+<div>
+<strong>Product</strong>
+<p>How it works</p>
+<p>Pricing</p>
+</div>
 
-  <p class="footer-muted">
-    © 2026 SlotRescue — Built in Southampton, UK
-  </p>
+<div>
+<strong>Company</strong>
+<p><a href="https://zanclelabs.com">ZancleLabs</a></p>
+<p><a href="mailto:hello@slotrescue.co.uk">hello@slotrescue.co.uk</a></p>
+</div>
+
+</div>
+
+<p class="footer-muted">
+© 2026 SlotRescue — Built in Southampton, UK
+</p>
+
 </footer>
 
 <script>
-  // Counter animato nella mockup
-  const revenueTarget = 1420;
-  const slotTarget = 17;
-  let revenue = 0;
-  let slots = 0;
 
-  const revenueElement = document.getElementById("revenue");
-  const slotsElement = document.getElementById("slots");
+const revenueTarget=1420
+const slotTarget=17
+let revenue=0
+let slots=0
 
-  const counter = setInterval(() => {
-    revenue += 20;
-    slots += 1;
+const revenueElement=document.getElementById("revenue")
+const slotsElement=document.getElementById("slots")
 
-    if (revenue >= revenueTarget) {
-      revenue = revenueTarget;
-      slots = slotTarget;
-      clearInterval(counter);
-    }
+const counter=setInterval(()=>{
+revenue+=20
+slots+=1
 
-    revenueElement.textContent = revenue;
-    slotsElement.textContent = slots;
-  }, 60);
+if(revenue>=revenueTarget){
+revenue=revenueTarget
+slots=slotTarget
+clearInterval(counter)
+}
 
-  // Animazione sezioni on scroll
-  const sections = document.querySelectorAll(".section");
+revenueElement.textContent=revenue
+slotsElement.textContent=slots
 
-  window.addEventListener("scroll", () => {
-    sections.forEach(section => {
-      const top = section.getBoundingClientRect().top;
-      if (top < window.innerHeight - 100) {
-        section.classList.add("visible");
-      }
-    });
-  });
+},60)
 
-  // Highlight verde "slot riempito" dopo un piccolo delay
-  const greenLine = document.getElementById("mockup-green");
-  if (greenLine){
-    setTimeout(() => {
-      greenLine.classList.add("highlight");
-    }, 1200);
-  }
+const sections=document.querySelectorAll(".section")
+
+window.addEventListener("scroll",()=>{
+sections.forEach(section=>{
+const top=section.getBoundingClientRect().top
+if(top<window.innerHeight-100){
+section.classList.add("visible")
+}
+})
+})
+
 </script>
 
 </body>
