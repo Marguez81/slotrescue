@@ -1,293 +1,402 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SlotRescue — Recover Cancelled Appointments</title>
 
-<title>SlotRescue — Recover Cancelled Appointments</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-<link rel="icon" href="favicon.ico">
+  <style>
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      margin:0;
+      background:#ffffff;
+      color:#111;
+    }
 
-<style>
+    a{ color:inherit; }
 
-body{
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-margin:0;
-background:#ffffff;
-color:#111;
-}
+    /* Header */
 
-.container{
-max-width:1100px;
-margin:auto;
-padding:80px 20px;
-}
+    .site-header{
+      position:sticky;
+      top:0;
+      z-index:20;
+      background:rgba(255,255,255,0.9);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid #edf0f5;
+    }
 
-.hero{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:60px;
-align-items:center;
-}
+    .header-inner{
+      max-width:1100px;
+      margin:0 auto;
+      padding:14px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
 
-h1{
-font-size:52px;
-line-height:1.1;
-margin-bottom:20px;
-}
+    .header-left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
 
-h2{
-font-size:34px;
-margin-bottom:20px;
-}
+    .logo-img{
+      height:34px;
+      display:block;
+    }
 
-p{
-font-size:18px;
-color:#555;
-line-height:1.6;
-}
+    .nav{
+      display:flex;
+      align-items:center;
+      gap:28px;
+      font-size:16px;
+      color:#222;
+    }
 
-.button{
-display:inline-block;
-padding:16px 32px;
-background:#2563eb;
-color:white;
-text-decoration:none;
-border-radius:8px;
-font-weight:600;
-margin-top:20px;
-}
+    .nav a{
+      text-decoration:none;
+      position:relative;
+      padding-bottom:2px;
+    }
 
-.preview{
-background:#f5f7fb;
-border-radius:12px;
-padding:30px;
-box-shadow:0 10px 40px rgba(0,0,0,0.08);
-}
+    .nav a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:0;
+      width:0;
+      height:2px;
+      background:#2563eb;
+      transition:width 0.2s ease;
+    }
 
-.feature-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-gap:30px;
-margin-top:40px;
-}
+    .nav a:hover::after{
+      width:100%;
+    }
 
-.feature{
-background:#f8f8f8;
-padding:25px;
-border-radius:10px;
-}
+    .nav-login{
+      font-weight:500;
+    }
 
-.price{
-font-size:34px;
-font-weight:600;
-}
+    .nav-cta{
+      padding:8px 18px;
+      border-radius:999px;
+      background:#2563eb;
+      color:#fff;
+      font-weight:600;
+      text-decoration:none;
+    }
 
-.center{
-text-align:center;
-}
+    /* Layout base */
 
-footer{
-text-align:center;
-padding:60px 20px;
-color:#777;
-font-size:14px;
-}
+    .container{
+      max-width:1100px;
+      margin:auto;
+      padding:80px 20px;
+    }
 
-@media(max-width:900px){
+    .hero{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:60px;
+      align-items:center;
+    }
 
-.hero{
-grid-template-columns:1fr;
-}
+    h1{
+      font-size:52px;
+      line-height:1.1;
+      margin-bottom:20px;
+    }
 
-h1{
-font-size:40px;
-}
+    h2{
+      font-size:34px;
+      margin-bottom:20px;
+    }
 
-}
+    p{
+      font-size:18px;
+      color:#555;
+      line-height:1.6;
+    }
 
-</style>
+    .button{
+      display:inline-block;
+      padding:16px 32px;
+      background:#2563eb;
+      color:white;
+      text-decoration:none;
+      border-radius:8px;
+      font-weight:600;
+      margin-top:20px;
+    }
 
+    .preview{
+      background:#f5f7fb;
+      border-radius:12px;
+      padding:30px;
+      box-shadow:0 10px 40px rgba(0,0,0,0.08);
+      font-size:16px;
+    }
+
+    .feature-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:30px;
+      margin-top:40px;
+    }
+
+    .feature{
+      background:#f8f8f8;
+      padding:25px;
+      border-radius:10px;
+      border:1px solid #eee;
+    }
+
+    .price{
+      font-size:34px;
+      font-weight:600;
+    }
+
+    .center{
+      text-align:center;
+    }
+
+    footer{
+      text-align:center;
+      padding:60px 20px;
+      color:#777;
+      font-size:14px;
+    }
+
+    /* Animazioni sezione */
+
+    .fade-section{
+      opacity:0;
+      transform:translateY(24px);
+      transition:opacity 0.4s ease,transform 0.4s ease;
+    }
+
+    .fade-section.visible{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    .fade-section.hidden-up{
+      opacity:0;
+      transform:translateY(24px);
+    }
+
+    @media(max-width:900px){
+      .hero{
+        grid-template-columns:1fr;
+      }
+
+      h1{
+        font-size:40px;
+      }
+
+      .header-inner{
+        padding:12px 16px;
+      }
+
+      .nav{
+        display:none;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-left">
+      <!-- Sostituisci src con il percorso del tuo logo -->
+      <img src="logo-slotrescue.png" alt="SlotRescue" class="logo-img">
+    </div>
+    <nav class="nav">
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#login" class="nav-login">Login</a>
+    </nav>
+  </div>
+</header>
 
-<section class="container hero">
+<section class="container hero fade-section">
+  <div>
+    <h1>
+      Stop losing money from cancelled appointments
+    </h1>
 
-<div>
+    <p>
+      SlotRescue automatically fills last-minute cancellations by offering earlier appointments
+      to customers who already booked.
+    </p>
 
-<h1>
-Stop losing money from cancelled appointments
-</h1>
+    <a class="button" href="mailto:hello@slotrescue.co.uk?subject=SlotRescue%20early%20access">
+      Start for free
+    </a>
 
-<p>
-SlotRescue automatically fills last-minute cancellations by offering earlier appointments
-to customers who already booked.
-</p>
+    <p style="margin-top:15px;color:#777">
+      Free until SlotRescue fills your first appointment
+    </p>
+  </div>
 
-<a class="button">
-Start for free
-</a>
-
-<p style="margin-top:15px;color:#777">
-Free until SlotRescue fills your first appointment
-</p>
-
-</div>
-
-
-<div class="preview">
-
-<strong>Today's appointments</strong>
-
-<br><br>
-
-09:00 – MOT Test ✔  
-10:00 – Service ✔  
-11:00 – Cancelled  
-
-<br><br>
-
-<strong>SlotRescue notification sent</strong>
-
-<br><br>
-
-Customer accepted earlier slot ✔  
-
-<br><br>
-
-<strong>Appointment filled automatically</strong>
-
-</div>
-
+  <div class="preview">
+    <strong>Today's appointments</strong>
+    <br><br>
+    09:00 – MOT Test ✔<br>
+    10:00 – Service ✔<br>
+    11:00 – Cancelled
+    <br><br>
+    <strong>SlotRescue notification sent</strong>
+    <br><br>
+    Customer accepted earlier slot ✔
+    <br><br>
+    <strong>Appointment filled automatically</strong>
+  </div>
 </section>
 
+<section class="container fade-section">
+  <h2>
+    Cancelled appointments cost businesses thousands every year
+  </h2>
 
-<section class="container">
+  <p>
+    When a customer cancels at the last minute, the available slot often remains empty.
+    Even when other customers would gladly take an earlier appointment,
+    they simply never discover the newly available slot in time.
+  </p>
 
-<h2>
-Cancelled appointments cost businesses thousands every year
-</h2>
-
-<p>
-When a customer cancels at the last minute, the available slot often remains empty.
-Even when other customers would gladly take an earlier appointment,
-they simply never discover the newly available slot in time.
-</p>
-
-<p>
-A clinic that loses just two £100 appointments per week can lose over £10,000 per year.
-</p>
-
+  <p>
+    A clinic that loses just two £100 appointments per week can lose over £10,000 per year.
+  </p>
 </section>
 
+<section id="how" class="container fade-section">
+  <h2>
+    How SlotRescue works
+  </h2>
 
-<section class="container">
+  <div class="feature-grid">
+    <div class="feature">
+      <strong>1. Appointment cancelled</strong>
+      <p>A booked slot becomes available.</p>
+    </div>
 
-<h2>
-How SlotRescue works
-</h2>
+    <div class="feature">
+      <strong>2. Customers notified</strong>
+      <p>People with future bookings receive a message offering the earlier time.</p>
+    </div>
 
-<div class="feature-grid">
+    <div class="feature">
+      <strong>3. First confirmation wins</strong>
+      <p>The first customer who confirms gets the earlier appointment.</p>
+    </div>
 
-<div class="feature">
-<strong>1. Appointment cancelled</strong>
-<p>A booked slot becomes available.</p>
-</div>
-
-<div class="feature">
-<strong>2. Customers notified</strong>
-<p>People with future bookings receive a message offering the earlier time.</p>
-</div>
-
-<div class="feature">
-<strong>3. First confirmation wins</strong>
-<p>The first customer who confirms gets the earlier appointment.</p>
-</div>
-
-<div class="feature">
-<strong>4. Chain reaction</strong>
-<p>The original slot becomes available and may fill another appointment.</p>
-</div>
-
-</div>
-
+    <div class="feature">
+      <strong>4. Chain reaction</strong>
+      <p>The original slot becomes available and may fill another appointment.</p>
+    </div>
+  </div>
 </section>
 
+<section class="container fade-section">
+  <h2>
+    A smart waiting list that works automatically
+  </h2>
 
-<section class="container">
-
-<h2>
-A smart waiting list that works automatically
-</h2>
-
-<p>
-Many customers would accept an earlier appointment if one becomes available.
-SlotRescue automatically contacts customers who already have bookings
-and prefer an earlier time.
-</p>
-
+  <p>
+    Many customers would accept an earlier appointment if one becomes available.
+    SlotRescue automatically contacts customers who already have bookings
+    and prefer an earlier time.
+  </p>
 </section>
 
+<section class="container fade-section">
+  <h2>
+    Built for appointment-based businesses
+  </h2>
 
-<section class="container">
-
-<h2>
-Built for appointment-based businesses
-</h2>
-
-<div class="feature-grid">
-
-<div>Dentists</div>
-<div>Beauty clinics</div>
-<div>Physiotherapy</div>
-<div>Hair salons</div>
-<div>Veterinary clinics</div>
-<div>Garages & MOT centres</div>
-
-</div>
-
+  <div class="feature-grid">
+    <div class="feature">Dentists</div>
+    <div class="feature">Beauty clinics</div>
+    <div class="feature">Physiotherapy</div>
+    <div class="feature">Hair salons</div>
+    <div class="feature">Veterinary clinics</div>
+    <div class="feature">Garages & MOT centres</div>
+  </div>
 </section>
 
+<section id="pricing" class="container center fade-section">
+  <h2>
+    The software pays for itself quickly
+  </h2>
 
-<section class="container center">
+  <p>
+    If SlotRescue fills just one £100 appointment per month,
+    the software already pays for itself.
+  </p>
 
-<h2>
-The software pays for itself quickly
-</h2>
+  <p class="price">
+    £20/month
+    <br>
+    £120/year
+  </p>
 
-<p>
-If SlotRescue fills just one £100 appointment per month,
-the software already pays for itself.
-</p>
-
-<p class="price">
-£20/month
-<br>
-£120/year
-</p>
-
-<a class="button">
-Start filling cancelled slots
-</a>
-
+  <a id="cta" class="button" href="mailto:hello@slotrescue.co.uk?subject=SlotRescue%20early%20access">
+    Start filling cancelled slots
+  </a>
 </section>
 
+<section id="login" class="container center fade-section">
+  <h2>Login</h2>
+  <p>Login for existing customers will be available soon.</p>
+</section>
 
 <footer>
-
-<p>
-SlotRescue™ — A product by <a href="https://zanclelabs.com">ZancleLabs</a>
-</p>
-
-<p>
-hello@slotrescue.co.uk
-</p>
-
+  <p>
+    SlotRescue™ — A product by <a href="https://zanclelabs.com">ZancleLabs</a>
+  </p>
+  <p>
+    <a href="mailto:hello@slotrescue.co.uk">hello@slotrescue.co.uk</a>
+  </p>
 </footer>
 
+<script>
+  (function () {
+    const sections = document.querySelectorAll('.fade-section');
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              entry.target.classList.remove('hidden-up');
+            } else {
+              // quando esce completamente verso l'alto
+              if (entry.boundingClientRect.top < 0) {
+                entry.target.classList.remove('visible');
+                entry.target.classList.add('hidden-up');
+              }
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+
+      sections.forEach(sec => observer.observe(sec));
+    } else {
+      sections.forEach(sec => sec.classList.add('visible'));
+    }
+  })();
+</script>
 
 </body>
 </html>
